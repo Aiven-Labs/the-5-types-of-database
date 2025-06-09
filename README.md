@@ -1,5 +1,7 @@
 # Explaining the 5 types of database and how to choose between them
 
+> **Note** this is a work in progress, don't expect anything sensible here yet!
+
 Slides and notes for the talk "Explaining the 5 types of database and how to
 choose between them", a talk (to be) given at
 [EuroPython 2025](https://ep2025.europython.eu/)
