@@ -31,6 +31,10 @@ I'll cover:
 * Key Value (Valkey™️)
 * and as an extra, Graph (Neo4J®)
 
+## Documents here
+
+[Notes](notes.md) are the notes I made when writing the talk.
+
 --------
 
 ![CC-Attribution-ShareAlike image](images/cc-attribution-sharealike-88x31.png)
