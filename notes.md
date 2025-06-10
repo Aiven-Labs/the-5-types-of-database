@@ -26,15 +26,63 @@ Intro to 5 different database types and why you might choose them
 
 ### Relational (PostgreSQL, SQLite)
 
+https://www.postgresql.org/
+
+> The World's Most Advanced Open Source Relational Database
+
+and
+
+> PostgreSQL is a powerful, open source object-relational database system with
+> over 35 years of active development that has earned it a strong reputation
+> for reliability, feature robustness, and performance.
+
+Under its own license, https://www.postgresql.org/about/licence/. There's a
+GitHub mirror of the source code, but that's not how it's developed - see
+the https://wiki.postgresql.org/wiki/Developer_FAQ and
+https://wiki.postgresql.org/wiki/Submitting_a_Patch
+
+But also https://sqlite.org/ because it's a *library* that is packaged all
+over the place (including in Python)
+
+> SQLite is a C-language library that implements a small, fast,
+> self-contained, high-reliability, full-featured, SQL database engine. SQLite
+> is the most used database engine in the world.
+
+SQLite is "public domain" - see https://sqlite.org/copyright.html - and while
+it's open source, it isn't open-contribution. So that's interesting.
+
 ### Columnar (ClickHouse) *analytics*
+
+https://github.com/ClickHouse/ClickHouse (Apache v2.0)
+
+> ClickHouse® is a real-time analytics database management system
+
+https://clickhouse.com/
+
+> The fastest analytical database for ...
+
+Obviously there are also commerecial offerings
+
 
 ### Document (OpenSearch) - generally based on Lucene, *indexing*
 
-#### Worriting over details: is OpenSearch a fair enough choice?
+When I think of "document" databases, I think of Lucene based services, with
+that concentration on "indexing all the things". So OpenSearch is my obvious
+choice here.
 
-Do I need a callout to MongoDB as an actual JSON based database? - it has
-different strengths, so just mentionin Lucene-based solutions may be slightly
-less helpful? How much time do I want to spend on this?
+https://opensearch.org/
+
+> Find the meaning in your data
+>
+> OpenSearch is an open-source, enterprise-grade search and observability
+> suite that brings order to unstructured data at scale
+
+However, I could understand that people might think first of something like
+MongoDB, which is (essentially) JSON based. Should I mention this? Do I have
+enough time to anything useful (or is there a one sentence summary I can use
+to refer people to MongoDB if that's their actual need)?
+
+https://www.mongodb.com/
 
 Note: [FerretDB](https://blog.ferretdb.io/) gives "MongoDB" on top of PG. Version 2 is based on
 [DocumentDB](https://github.com/microsoft/documentdb) from Microsoft, itself
@@ -57,9 +105,32 @@ and I'm sure there's other good stuff to consider.
 
 ...but also think Python dictionaries
 
+https://valkey.io/
+
+> FAST. RELIABLE. OPEN SOURCE, FOREVER.
+>
+> Valkey is an open source (BSD) high-performance key/value datastore that
+> supports a variety of workloads such as caching, message queues, and can act
+> as a primary database. The project is backed by the Linux Foundation,
+> ensuring it will remain open source forever.
+
+
+
 ### and as an extra, graph (Neo4J)
 
 Why? Because Gothic and my history with an object oriented database.
+
+https://neo4j.com/
+
+> Neo4j, the world's most-loved graph database
+
+https://neo4j.com/product/neo4j-graph-database/
+
+https://github.com/neo4j -> https://github.com/neo4j/neo4j (GPL3 license)
+
+(there's also an enterprise edition)
+
+-----
 
 30 minutes for intro/outro + 5 ideas = 30/6 = 5 minutes each.
 
