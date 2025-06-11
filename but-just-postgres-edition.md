@@ -2,8 +2,8 @@
 
 Because obviously we could just use Postgres for all of them...
 
-> **Note** see the appendix [But Postgres!](notes.md##appendix-but-postgres)
-> to the [notes](notes.md)
+> **Note** see the appendix [But Postgres!](notes.md#appendix-but-postgres)
+> in the main talk [notes](notes.md)
 >
 > **Note** that this talk does not exist :)
 

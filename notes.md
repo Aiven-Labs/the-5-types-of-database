@@ -281,7 +281,7 @@ Questions for the audience (and for discussion afterwards):
 * Do they agree with that way of splitting up databases?
 * Do they think I've missed something important?
 
-## Appendix: But Postgres!**
+## Appendix: But Postgres!
 
 > **Note** This may or may not stay in the notes. It definitely won't have
 > time to be in the talk.
