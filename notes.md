@@ -2,7 +2,30 @@
 
 > **Note** I'm in the "gather notes, gather links, reduce later" stage :)
 
+## Abstract (repeated from the README)
+
+What database should you choose? Worse, what *kind* of database should you choose?
+
+My aim is to give you enough information to make that choice, or at least be
+aware of what the alternatives are.
+
+I'd argue that there are five important database types at the moment, differing
+in how they regard the "shape" of their data. I'll give a brief introduction to
+each, explaining how it works, and discuss why you might want to use that
+particular type of database, depending on your data and what you want to do
+with it. I'll show case at least one open source example of each.
+
+I'll cover:
+
+* Relational (PostgreSQL®, SQLite)
+* Columnar (ClickHouse®)
+* Document (OpenSearch®)
+* Key Value (Valkey™️)
+* and as an extra, Graph (Neo4J®)
+
 ## Outline
+
+> **Note** this is essentially what I've promised to talk about.
 
 A brief introduction to the idea of databases,  and how long they've been around.
 
@@ -22,13 +45,15 @@ A brief introduction to the idea of databases,  and how long they've been around
 
 And at the end a summary of what we've learnt.
 
+------
+
 ## Working notes
 
 Intro to 5 different database types and why you might choose them
 
 > A talk lasting 30 minutes -> intro/outro + 5 ideas = 30/6 = 5 minutes each.
 
-### The 5 kinds of database I'll look at
+## The 5 kinds of database I'll look at
 
 * Relational
 * Columnar
@@ -41,9 +66,19 @@ This sets the scene for what I'm going to do
 But first, **some history** (this may or may not fit into the talk itself, but
 should be kept for the notes)
 
-### The beginnings
+## The beginnings
 
-#### Hierarchical databases and other old stuff
+> **Note** do I even need this section?
+>
+> Probably not in the slides - do I want it as a separate section in the
+> notes? In which case the discussion of Codd and SQL might be better here.
+>
+> It's going to be way too easy to have too much background stuff on RDBMSs,
+> whereas for the others I'm really just looking at the different shapes.
+> But I do feel we need some background on relational ideas, especially as
+> this really is the "probably best to start here" solution
+
+### Hierarchical databases and other old stuff
 
 In the begining were hierarchical databases.
 
@@ -51,6 +86,15 @@ In the begining were hierarchical databases.
 
 When I was at University, I was taught these were The Way of the Future. This
 turned out not to be the case, and we shan't mention them any further...
+
+## Relational - **all kinds of everything**
+
+My promise:
+
+  A mention of Codd and how his ideas led to relational databases. A *very*
+  brief explanation of denormalisation, the idea of references from one table
+  to another, and why RDBs often "win". PostgreSQL® (the swiss army knife of
+  databases) and SQLite (which is in the Python library).
 
 ### Codd and the invention of "relational"
 
@@ -77,6 +121,24 @@ compliant with all of the rules? Do we care - perhaps we know an RDBMS when we
 point at one...
 
 Regardless, the importance of these ideas should not be ignored.
+  
+-----
+
+&lt;picture of a table&gt;
+
+&lt;example of denormalising&gt;
+
+&lt;picture of two tables with a join shown as an arrow&gt;
+
+&lt;a schema?&gt; (do we want to mention schemas? do I have time?)
+
+------
+  
+### Simple explanation
+
+### Denormalisation
+
+### Joins
 
 ### SQL
 
@@ -94,10 +156,20 @@ with it for CRUD, so SQL will come in there.
 using INGRES in the late 1980s / early 1990s. I don't remember finding it
 any "friendlier" than SQL (we were also using Oracle at the time).
 
-### Relational (PostgreSQL, SQLite)
+### Basically, Codd showed that RDBs could do it all...
 
-  
-* The databases I've chosen and why
+...and thats proven to be (essentially) the case
+
+> **Note** this is perhaps the point to mention the "it goes around" articles,
+> and to foreshadow my talking about Gothic in the graph databases section...
+
+### Open source examples: PostgreSQL, SQLite
+
+Why two examples?
+
+* PG - arguably the best relational database
+
+* SQLite - interesting because it's a library and it's everywhere
 
 https://en.wikipedia.org/wiki/Relational_database
 
@@ -125,6 +197,16 @@ over the place (including in Python)
 
 SQLite is "public domain" - see https://sqlite.org/copyright.html - and while
 it's open source, it isn't open-contribution. So that's interesting.
+
+### Why/when to use?
+
+For PostgreSQL, it's almost always a good place to start for storing data.
+**Add more stuff**
+
+For SQLite, it's always there (for instance, in Python) so there's no excuse
+not to use the full power of an RDB when storing data on disk.
+
+### Links and notes
 
 Meanwhile, the classic (yes, I'll say that) articles:
 
@@ -176,16 +258,16 @@ Other notes:
   in 1970. I really like this article.
   
   Note it also talks to SQL, its history, and its "style"
-  
------
 
-&lt;picture of a table&gt;
+## Columnar - *analytics*
 
-&lt;picture of two tables with a join shown as an arrow&gt;
+My promise:
 
-&lt;a schema?&gt;
+  How columnar databases are arranged, and how that makes it quicker to query
+  only some columns, but also the tradeoffs that requires, and why those
+  tradeoffs might be worthwhile. ClickHouse®.
 
-### Columnar (ClickHouse) *analytics*
+### Open source example: ClickHouse
 
 https://github.com/ClickHouse/ClickHouse (Apache v2.0)
 
@@ -195,12 +277,29 @@ https://clickhouse.com/
 
 > The fastest analytical database for ...
 
-Obviously there are also commeercial offerings
+Obviously there are also commercial offerings
 
 * Interesting: https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse
 
+Question for the audience: are columnar databases relational?
 
-### Document (OpenSearch) - generally based on Lucene, *indexing*
+
+### Why/when to use?
+
+...
+
+## Document - *indexing*, **document processing**, **search**
+
+My promise:
+
+  How Apache Lucene™️ forms the basis for document databases, their approach to
+  indexing, and why this is useful. OpenSearch®.
+
+Generally based on [Apache Lucene](https://lucene.apache.org/)
+
+> Lucene Core is a Java library providing powerful indexing and search
+> features, as well as spellchecking, hit highlighting and advanced
+> analysis/tokenization capabilities.
 
 When I think of "document" databases, I think of Lucene based services, with
 that concentration on "indexing all the things". So OpenSearch is my obvious
@@ -212,6 +311,17 @@ https://opensearch.org/
 >
 > OpenSearch is an open-source, enterprise-grade search and observability
 > suite that brings order to unstructured data at scale
+
+### Open source example: OpenSearch
+
+### Why/when to use?
+
+...
+
+### Discussion on MongoDB as a different sort of document database
+
+> **Note** may be a brief mention in the talk. Obviously not open source, so
+> technically my abstract has ruled it out anyway.
 
 However, I could understand that people might think first of something like
 MongoDB, which is (essentially) JSON based. Should I mention this? Do I have
@@ -237,9 +347,14 @@ Some quick googling gives:
 
 and I'm sure there's other good stuff to consider.
 
-### Key Value (Valkey) *caching* (and more!)
+## Key Value - *caching* and more!
 
-...but also think Python dictionaries
+My promise:
+
+  Key / value stores, in memory storage, their use in caching and elsewhere,
+  and how they fit the Python mind. Valkey™️.
+
+### Open source example: Valkey
 
 https://valkey.io/
 
@@ -250,11 +365,20 @@ https://valkey.io/
 > as a primary database. The project is backed by the Linux Foundation,
 > ensuring it will remain open source forever.
 
+### Why/when to use?
 
+...
 
-### and as an extra, graph (Neo4J)
+## and as an extra, Graph
+
+My promise:
+
+  A brief mention of graph databases, because they're fascinating and not like
+  the others. Neo4J®
 
 Why? Because Gothic and my history with an object oriented database.
+
+### Open source example: Neo4j
 
 https://neo4j.com/
 
@@ -266,15 +390,35 @@ https://github.com/neo4j -> https://github.com/neo4j/neo4j (GPL3 license)
 
 (there's also an enterprise edition)
 
-### What we've looked at
+### Why/when to use?
+
+...
+
+## What we've looked at
 
 Five different kinds (shapes) of database
 
 * Relational (PostgreSQL®, SQLite)
+
+  Use these when ...
+
 * Columnar (ClickHouse®)
+
+  Use this when ...
+
 * Document (OpenSearch®)
+
+  Use this when ...
+
 * Key Value (Valkey™️)
+
+  Use this when ...
+
 * and as an extra, Graph (Neo4J®)
+
+  Use this when ...
+
+---
 
 Questions for the audience (and for discussion afterwards):
 
