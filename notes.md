@@ -285,8 +285,8 @@ Questions for the audience (and for discussion afterwards):
 
 > **Note** This may or may not stay in the notes. It definitely won't have
 > time to be in the talk. See also the abstract for the ["but just
-> Postgres"](but-just-postgres-edition.md) version of this talk (which doesn't
-> exist!)
+> Postgres"](but-just-postgres-edition.md) version of this talk (which hasn't
+> been written as an actual talk)
 
 Of course, I'm a PostgreSQL fan, and in fact PG will let you do a lot of
 things you don't expect. So this is the "but actually, you could just use
