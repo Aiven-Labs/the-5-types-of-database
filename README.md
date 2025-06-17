@@ -37,6 +37,23 @@ I'll cover:
 
 [Notes](notes.md) are the notes I made when writing the talk.
 
+When they're stable, the slides PDF file will be here as [slides.pdf](slides.pdf).
+
+## Creating the slides
+
+The slides are created using [typst]("https://typst.app/") and the
+[polylux]("https://typst.app/universe/package/polylux/") package.
+ 
+To build I use the command line tool `typst`. See the [installation
+instructions](https://github.com/typst/typst?tab=readme-ov-file#installation)
+from the [typst GitHub repostory](https://github.com/typst/typst) - on my mac
+I install it with `brew install typst`.
+ 
+The provided `Makefile`
+can also produce the slides
+(you'll need `make`, either GNU or BSD should work).
+Try `make slides` and `make help`.
+
 --------
 
 ![CC-Attribution-ShareAlike image](images/cc-attribution-sharealike-88x31.png)
