@@ -9,21 +9,34 @@
 // Trying out QR codes
 #import "@preview/tiaoma:0.3.0"
 
+// I want URLs to be visibly such - otherwise they'll just be shown as normal text
+// #show link: underline
+#show link: set text(blue)
+
 // Use #slide to create a slide and style it using your favourite Typst functions
 #slide[
   #set align(horizon)
-  = Very minimalist slides
 
-  A lazy author
+  #heading(
+    level: 1,
+    [Explaining the 5 types of database \
+     and how to choose between them]
+  )
 
-  July 23, 2023
+  #v(20pt)
 
-  #grid(
+  Tibs, Product Evangelist at Aiven
+
+  18#super[th] July 2025, EuroPython 2025
+
+  #align(right,
+  grid(
     rows: (auto, auto),
     align: center,
     row-gutter: 10.0pt,
     tiaoma.qrcode("https://aiven.io/tibs", options: (scale: 3.0)),
     [https://aiven.io/tibs]
+  )
   )
 ]
 
@@ -45,12 +58,18 @@
   == Fin
 
   #grid(
-    columns: (40%, auto),
-    align: center,
+    columns: (50%, auto),
+    align: left,
     row-gutter: 10.0pt,
-    text(0.8em)[Slides available at https://github.com/Aiven-Labs/the-5-types-of-database],
+    column-gutter: 10.0pt,
+    text(0.8em)[
+      Slides available at \
+      https://github.com/Aiven-Labs/the-5-types-of-database
+    ],
     tiaoma.qrcode("https://github.com/Aiven-Labs/the-5-types-of-database", options: (scale: 2.0)),
   )
 
-  Slides created using `typst` and `polylux`
+  Slides created using
+  #link("https://typst.app/")[typst] and
+  #link("https://typst.app/universe/package/polylux/")[polylux]
 ]
