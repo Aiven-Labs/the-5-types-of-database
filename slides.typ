@@ -64,7 +64,11 @@
     column-gutter: 10.0pt,
     text(0.8em)[
       Slides available at \
-      https://github.com/Aiven-Labs/the-5-types-of-database
+      https://github.com/Aiven-Labs/the-5-types-of-database, licensed
+      #box(
+        baseline: 50%,
+        image("images/cc-attribution-sharealike-88x31.png"),
+      )
     ],
     tiaoma.qrcode("https://github.com/Aiven-Labs/the-5-types-of-database", options: (scale: 2.0)),
   )
