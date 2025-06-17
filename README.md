@@ -55,7 +55,11 @@ typst compile -f pdf slides.typ
 The provided `Makefile`
 can also produce the slides
 (you'll need `make`, either GNU or BSD should work).
-Try `make slides` and `make help`.
+Try
+```shell
+make slides
+```
+and `make help` for what else it can do.
 
 --------
 
