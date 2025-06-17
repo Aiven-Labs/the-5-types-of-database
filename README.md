@@ -47,7 +47,10 @@ The slides are created using [typst](https://typst.app/) and the
 To build I use the command line tool `typst`. See the [installation
 instructions](https://github.com/typst/typst?tab=readme-ov-file#installation)
 from the [typst GitHub repostory](https://github.com/typst/typst) - on my mac
-I install it with `brew install typst`.
+I install it with `brew install typst` - and then
+```shell
+typst compile -f pdf slides.typ
+```
  
 The provided `Makefile`
 can also produce the slides
