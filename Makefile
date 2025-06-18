@@ -6,6 +6,7 @@ pdf: slides
 .PHONY: slides
 slides:
 	typst compile -f pdf slides.typ
+	open slides.pdf
 
 # Doesn't work for slides, as
 # "error: page configuration is not allowed inside of containers"
