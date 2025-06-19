@@ -477,6 +477,8 @@
     tiaoma.qrcode("https://github.com/Aiven-Labs/the-5-types-of-database", options: (scale: 2.0)),
   )
 
+  _And a link / QR code to Aiven so people can try most of these on our managed services 🙂_
+
   Slides created using
   #link("https://typst.app/")[typst] and
   #link("https://typst.app/universe/package/polylux/")[polylux]
