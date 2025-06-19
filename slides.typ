@@ -24,6 +24,16 @@
 ]
 #set page(footer: slide-footer)
 
+
+// If a quote has an attribution, but is not marked as "block", then write
+// the attribution after it (in smaller text)
+// Adapted from an example in the Typst documentation for quote's attribution
+// parameter, at https://typst.app/docs/reference/model/quote/
+#show quote.where(block: false): it => {
+  ["] + h(0pt, weak: true) + it.body + h(0pt, weak: true) + ["]
+  if it.attribution != none [ -- #text(size:20pt)[#it.attribution]]
+}
+
 // Use #slide to create a slide and style it using your favourite Typst functions
 #slide[
   #set align(horizon)
@@ -74,58 +84,152 @@
 
 #slide[
   == Relational
+
+  `<picture of table>`
 ]
 
 #slide[
   == Relational example 1: PostgreSQL®
 
-  #image("images/elephant.png", height:100pt)
-]
+  #image("images/elephant.png", height:50pt)
+
+  #quote[ PostgreSQL is a powerful, open source object-relational database
+    system with over 35 years of active development that has earned it a
+    strong reputation for reliability, feature robustness, and performance. ]
+  ]
 
 #slide[
   == Relational example 1: sqlite
 
-  #image("images/sqlite370_banner.svg", height:100pt)
+  #image("images/sqlite370_banner.svg", height:50pt)
+
+  #quote[
+    SQLite is a C-language library that implements a small, fast,
+    self-contained, high-reliability, full-featured, SQL database engine. SQLite
+    is the most used database engine in the world.
+  ]
 ]
+
 
 #slide[
   == Columnar
+
+  `<picture of table with columns slightly separated, maybe compressed>`
 ]
 
 #slide[
   == Columnar example: ClickHouse®
 
-  #image("images/ClickHouse_Logo_Black_FNL.svg", height:100pt)
+  #image("images/ClickHouse_Logo_Black_FNL.svg", height:50pt)
+
+  #quote(
+    attribution: [
+      #link("https://github.com/ClickHouse/ClickHouse")[github.com/ClickHouse/ClickHouse]
+    ],
+    [
+      ClickHouse® is an open-source column-oriented database management
+      system that allows generating analytical data reports in real-time.
+    ]
+  )
+
+  #quote(
+    attribution: [
+      #link("https://clickhouse.com")[clickhouse.com]
+    ],
+    [
+      ClickHouse is the fastest and most resource efficient real-time
+      data warehouse and open-source database.
+    ]
+  )
+
 ]
 
 #slide[
   == Document
+
+  `<picture of a JSON document>`
 ]
 
 #slide[
   == Document example: OpenSearch®
 
-  #image("images/opensearch_logo_default.svg", height:100pt)
+  #image("images/opensearch_logo_default.svg", height:50pt)
+
+  #quote[
+    OpenSearch is an open-source, enterprise-grade search and observability
+    suite that brings order to unstructured data at scale
+  ]
 ]
 
 #slide[
+  == OpenSearch considerations
+
+  - Designed to be distributed - scaling *horizontally*
+  - Backed by #link("https://lucene.apache.org/")[Apache Lucene]
+  - Queries are written in JSON
+]
+
+// The Lucene project was started in 1999!
+//
+// "Lucene Core is a Java library providing powerful indexing and search
+// features, as well as spellchecking, hit highlighting and advanced
+// analysis/tokenization capabilities. The PyLucene sub project provides
+// Python bindings for Lucene Core."
+
+#slide[
   == Key Value
+
+  `<picture of a dictionary 🙂 >`
 ]
 
 #slide[
   == Key Value example: Valkey™
 
-  #image("images/valkey-horizontal.svg", height:100pt)
+  #image("images/valkey-horizontal.svg", height:50pt)
+
+  #quote[
+    Valkey is an open source (BSD) high-performance key/value datastore that
+    supports a variety of workloads such as caching, message queues, and can
+    act as a primary database.
+  ]
 ]
 
 #slide[
   == Graph
+
+  `<picture of object graph>`, *not* `picture of XY data graph`
 ]
 
 #slide[
   == Graph example: Neo4J®
 
-  #image("images/neo4j-logo.svg", height:100pt)
+  #image("images/neo4j-logo.svg", height:50pt)
+
+  #quote[Graphs for Everyone]
+  #quote[the world's most-loved graph database]
+
+  #quote(
+    attribution: [
+      #link("https://github.com/neo4j/neo4j")[github.com/neo4j/neo4j]
+    ],
+    [
+      Neo4j is the world’s leading Graph Database. It is a high performance
+      graph store with all the features expected of a mature and robust
+      database, like a friendly query language and ACID transactions. The
+      programmer works with a flexible network structure of nodes and
+      relationships rather than static tables — yet enjoys all the benefits of
+      enterprise-quality database.
+    ]
+  )
+
+  #quote(
+    attribution: [
+      #link("https://neo4j.com")[neo4j.com]
+    ],
+    [
+      the world's most-loved graph database
+    ]
+  )
 ]
 
 #slide[
