@@ -46,18 +46,27 @@
 
   #v(20pt)
 
-  Tibs, Product Advocate at Aiven
+  Tibs (they / he)
 
-  18#super[th] July 2025, EuroPython 2025
+  #grid(
+    columns: 2,
 
-  #align(right,
-  grid(
-    rows: (auto, auto),
-    align: center,
-    row-gutter: 10.0pt,
-    tiaoma.qrcode("https://aiven.io/tibs", options: (scale: 3.0)),
-    [https://aiven.io/tibs]
-  )
+    text(size: 20pt)[
+
+      18#super[th] July 2025, EuroPython 2025
+
+      Slides available at https://github.com/Aiven-Labs/the-5-types-of-database
+    ],
+
+    align(right,
+      grid(
+        rows: (auto, auto),
+        align: center,
+        row-gutter: 10.0pt,
+        tiaoma.qrcode("https://aiven.io/tibs", options: (scale: 3.0)),
+        text(size: 20pt)[https://aiven.io/tibs]
+      )
+    )
   )
 ]
 
