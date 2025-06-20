@@ -458,28 +458,39 @@
  ]
 
 
+// Remember to update the shortlink go.aiven.io/tibs-signup
+// Also check we're still hiring before giving the talk
 #slide[
   == Fin
 
   #grid(
-    columns: (50%, auto),
+    rows: 2,
+    columns: (auto, auto),
     align: left,
-    row-gutter: 10.0pt,
+    row-gutter: 2em,
     column-gutter: 10.0pt,
-    text(0.8em)[
-      Slides available at \
+
+    [
+      Get a free trial of Aiven services at \
+      http://go.aiven.io/tibs-signup
+
+      Also, we're hiring! See https://aiven.io/careers
+    ],
+    tiaoma.qrcode("https://go.aiven.io/tibs-signup", options: (scale: 2.35)),
+
+    [
+      Slides created using
+      #link("https://typst.app/")[typst] and
+      #link("https://typst.app/universe/package/polylux/")[polylux],
+      and available at
       https://github.com/Aiven-Labs/the-5-types-of-database, licensed
       #box(
         baseline: 50%,
         image("images/cc-attribution-sharealike-88x31.png"),
       )
     ],
+
     tiaoma.qrcode("https://github.com/Aiven-Labs/the-5-types-of-database", options: (scale: 2.0)),
   )
 
-  _And a link / QR code to Aiven so people can try most of these on our managed services 🙂_
-
-  Slides created using
-  #link("https://typst.app/")[typst] and
-  #link("https://typst.app/universe/package/polylux/")[polylux]
 ]
