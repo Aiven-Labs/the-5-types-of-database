@@ -43,6 +43,8 @@ When they're stable, the slides PDF file will be here as [slides.pdf](slides.pdf
 
 The slides are created using [typst](https://typst.app/) and the
 [polylux](https://typst.app/universe/package/polylux/) package.
+
+They use the Libertinus fonts - see https://github.com/alerque/libertinus.
  
 To build I use the command line tool `typst`. See the [installation
 instructions](https://github.com/typst/typst?tab=readme-ov-file#installation)

@@ -1,4 +1,9 @@
 # Build PDFs from my .typ (Typst) files
+#
+# Requirements:
+# * Typst, see [the installation
+#   instructions](https://github.com/typst/typst?tab=readme-ov-file#installation)
+# * Libertinus fonts, from https://github.com/alerque/libertinus
 
 .PHONY: pdf
 pdf: slides
