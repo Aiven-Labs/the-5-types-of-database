@@ -47,6 +47,93 @@ And at the end a summary of what we've learnt.
 
 ------
 
+## Thinking on "when to use"
+
+yes, I know I'm ignoring the note structure later on - this is me thinking to
+myself. I may or may not fix it all in the future.
+
+
+### Relational
+
+- When tables suit
+- When queries are row based
+
+#### PostgreSQL
+
+
+#### SQLite
+
+SQLite has its own [quirks](https://SQLite.org/quirks.html), including less
+rigorouse typing (indeed, you can create a column and not specify a type)
+
+Given that, SQLite types are INTEGER, REAL, TEXT, BLOB, or as NULL
+
+------
+
+### Columnar
+
+- When tables suit
+- When queries are column based
+- For large amounts of data (because compressing columns works very well, and
+  the mechanism used also lead to fast access)
+
+
+#### ClickHouse
+
+
+
+------
+
+### Document
+
+
+#### OpenSearch
+
+
+
+------
+
+
+### Key Value
+
+
+#### Valkey
+
+
+------
+
+
+### Graph
+
+
+
+#### Neo4J
+
+------
+
+### For amusement, things everything has!
+
+#### JSON support
+
+(does SQLite have? -- yes)
+
+PG has JSON and JSONB
+
+ClickHouse has some very interesting JSON support
+
+#### Embedded vector storage and querying
+
+(does SQLite have? not as standard yet, but there are extensions - a quick
+search yields [sqlite-vec](https://github.com/asg017/sqlite-vec). Also see
+[How to Use sqlite-vec to Store and Query Vector
+Embeddings](https://stephencollins.tech/posts/how-to-use-sqlite-vec-to-store-and-query-vector-embeddings))
+
+(does valkey have yet? not as of 2025-06 - but see the PR [RFC for Valkey
+Vector Search](https://github.com/valkey-io/valkey-rfc/pull/8) and related
+issue [`[NEW]` Vector databse related
+support](https://github.com/valkey-io/valkey/issues/950))
+
+
 ## Working notes
 
 Intro to 5 different database types and why you might choose them
@@ -307,14 +394,14 @@ GitHub mirror of the source code, but that's not how it's developed - see
 the https://wiki.postgresql.org/wiki/Developer_FAQ and
 https://wiki.postgresql.org/wiki/Submitting_a_Patch
 
-But also https://sqlite.org/ because it's a *library* that is packaged all
+But also https://SQLite.org/ because it's a *library* that is packaged all
 over the place (including in Python)
 
 > SQLite is a C-language library that implements a small, fast,
 > self-contained, high-reliability, full-featured, SQL database engine. SQLite
 > is the most used database engine in the world.
 
-SQLite is "public domain" - see https://sqlite.org/copyright.html - and while
+SQLite is "public domain" - see https://SQLite.org/copyright.html - and while
 it's open source, it isn't open-contribution. So that's interesting.
 
 ### Why/when to use?
@@ -329,7 +416,7 @@ It's almost always a good place to start for storing data.
 It's always there (for instance, in Python) so there's no excuse not to use
 the full power of an RDB when storing data on disk. Remember it's single user.
 
-https://sqlite.org/whentouse.html
+https://SQLite.org/whentouse.html
 
 > SQLite does not compete with client/server databases. SQLite competes with fopen().
 
