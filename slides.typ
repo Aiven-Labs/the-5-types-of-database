@@ -7,24 +7,29 @@
 // Use big text for slides!
 #set text(size: 25pt)
 
-// And old-fashioned fonts...
+// And fonts. Typst seems to like Libertinus.
+// (I do rather like the serif capital Q)
+// I had to download it from the Releases folder at https://github.com/alerque/libertinus
+// and install it using /Applications/Font Book
+//
+// Before that, I was being traditional and using "Times Roman" and "Helivitica"
+// (or "Helvetica Neue")
 
-#set text(font: "Helvetica")
+#set text(font: "Libertinus Sans")
 
 #show heading.where(
   level: 1
 ): it => text(
-  font: "Times Roman",
+  font: "Libertinus Serif",
   it.body,
 )
 
 #show heading.where(
   level: 2
 ): it => text(
-  font: "Times Roman",
+  font: "Libertinus Serif",
   it.body,
 )
-
 
 // Trying out QR codes
 #import "@preview/tiaoma:0.3.0"
@@ -93,17 +98,8 @@
 ]
 
 #slide[
-  == Shapes, kinds...
 
-  I think of databases as separated by their *shape*
-
-  ...the way they hold their data
-
-  And that gives me 5 shapes to talk about
-]
-
-#slide[
-  == The five kinds of database I'll look at
+  == I think there are 5 database shapes
 
   - Relational
   - Columnar
@@ -111,7 +107,7 @@
   - Key Value
   - Graph
 
-  with open source examples of each
+  Let me tell you about them (with open source examples)
 ]
 
 #slide[
@@ -180,9 +176,9 @@
 ]
 
 #slide[
-  == Relational example 2: sqlite
+  == Relational example 2: SQLite
 
-  #image("images/sqlite370_banner.svg", height:50pt)
+  #image("images/SQLite370_banner.svg", height:50pt)
 
   #quote[
     SQLite is a C-language library that implements a small, fast,
@@ -192,12 +188,12 @@
 ]
 
 #slide[
-  == More on sqlite
+  == More on SQLite
 
   - A library
   - Built into the Python standard library
   - Single user
-  - Use it instead of JSON/YAML/TOML for storing data locally!
+  - Use it instead of #smallcaps(all: true)[JSON]/#smallcaps(all: true)[YAML]/#smallcaps(all: true)[TOML] for storing data locally!
 ]
 
 #slide[
