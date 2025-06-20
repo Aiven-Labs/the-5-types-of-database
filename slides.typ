@@ -3,8 +3,28 @@
 
 // Make the paper dimensions fit for a presentation and the text larger
 #set page(paper: "presentation-16-9")
-//#set text(size: 25pt, font: "Lato")
-#set text(size: 25pt, font: "Roboto")
+
+// Use big text for slides!
+#set text(size: 25pt)
+
+// And old-fashioned fonts...
+
+#set text(font: "Helvetica")
+
+#show heading.where(
+  level: 1
+): it => text(
+  font: "Times Roman",
+  it.body,
+)
+
+#show heading.where(
+  level: 2
+): it => text(
+  font: "Times Roman",
+  it.body,
+)
+
 
 // Trying out QR codes
 #import "@preview/tiaoma:0.3.0"
@@ -37,6 +57,8 @@
 // Use #slide to create a slide and style it using your favourite Typst functions
 #slide[
   #set align(horizon)
+
+  // = Explaining the 5 types of database and how to choose between them
 
   #heading(
     level: 1,
@@ -72,6 +94,7 @@
 
 #slide[
   == Shapes, kinds...
+
   I think of databases as separated by their *shape*
 
   ...the way they hold their data
