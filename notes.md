@@ -47,6 +47,34 @@ And at the end a summary of what we've learnt.
 
 ------
 
+Three key references
+
+* [A Relational Model of Data for Large Shared Data
+  Banks](https://www.seas.upenn.edu/~zives/03f/cis550/codd.pdf) (PDF of the
+  original paper by Codd from Communications of the ACM, volume 13, number 1
+  6, June 1970)
+
+  I find the first part fascinating for its clarity and insight into what the
+  alternatives at the time were, and the second part, introducing joins and so
+  on, somewhat harder going (I'd need to draw diagrams)
+
+* [What Goes Around Comes Around... And
+  Around...](https://db.cs.cmu.edu/papers/2024/whatgoesaround-sigmodrec2024.pdf)
+  (PDF, 2024)
+
+* [What Goes Around Comes
+  Around][https://people.cs.umass.edu/~yanlei/courses/CS691LL-f06/papers/SH05.pdf]
+  (PDF, 2005) from the 4th edition of Readings in Database Systems ("the Red
+  Book")
+  
+  (alternative
+  source)[https://people.csail.mit.edu/tdanford/6830papers/stonebraker-what-goes-around.pdf]
+  
+  (alternative source)[https://dsf.berkeley.edu/cs286/papers/goesaround-redbook2005.pdf]
+
+
+------
+
 ## Thinking on "when to use"
 
 yes, I know I'm ignoring the note structure later on - this is me thinking to
@@ -57,6 +85,8 @@ myself. I may or may not fix it all in the future.
 
 - When tables suit
 - When queries are row based
+- When you want maximum flexibility
+- When you want SQL
 
 #### PostgreSQL
 
@@ -66,7 +96,7 @@ myself. I may or may not fix it all in the future.
 SQLite has its own [quirks](https://SQLite.org/quirks.html), including less
 rigorouse typing (indeed, you can create a column and not specify a type)
 
-Given that, SQLite types are INTEGER, REAL, TEXT, BLOB, or as NULL
+Given that, SQLite types are INTEGER, REAL, TEXT, BLOB, or NULL
 
 ------
 
@@ -76,6 +106,7 @@ Given that, SQLite types are INTEGER, REAL, TEXT, BLOB, or as NULL
 - When queries are column based
 - For large amounts of data (because compressing columns works very well, and
   the mechanism used also lead to fast access)
+- When you want SQL
 
 
 #### ClickHouse
