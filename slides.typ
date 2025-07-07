@@ -135,21 +135,85 @@
 #slide[
   == Characteristics of relational databases
 
-  - Tables and rows
+  - Tables and rows and columns
   - Schema design up front
-  - Normalisation and joins
   - Transactions (pretty much always)
-  - ACID (_explain *very* briefly_)
-  - OLTP (online transaction processing)
+  // - ACID (_explain *very* briefly_)
+  // - OLTP (online transaction processing)
 ]
 
 // Modern RDBs can have quite sophisticated column types, including JSON/JSONB,
 // arrays (and thus embedded vectors), binary blobs, _what else that's interesting?_
 
 #slide[
-  == Relational: joins
+  == Relational tables
 
-  `<picture of 2 tables, joined>`
+  #show figure.where(
+    kind: table
+  ): set figure.caption(position: top)
+
+  #show figure.caption: it => [
+    Table #it.body
+  ]
+
+  #grid(
+    columns: 2,
+    row-gutter: 2em,
+    column-gutter: 10.0pt,
+    [*talks*],
+    table(
+      columns: 3, align: (right, left, right),
+      fill: (x, y) => if y == 0 { luma(240) },
+      [*id*], [*title*], [*speaker_id*],
+      [1], [This talk by me], text(red)[273],
+      [2], [Another talk by me], text(red)[273],
+      [3], [John's talk], text(blue)[301],
+    ),
+    [*attendees*],
+    table(
+      columns: 2, align: (right, left),
+      fill: (x, y) => if y == 0 { luma(240) },
+      [*id*], [*name*],
+      text(red)[273], [Tibs],
+      text(blue)[301], [John Smith],
+      [308], [John Smith],
+    ),
+  )
+
+]
+
+#slide[
+  == How to create those tables
+  ```SQL
+  CREATE TABLE attendees (
+    id int generated always as identity primary key,
+    name text,
+  );
+
+  CREATE TABLE talks (
+    id int generated always as identity primary key,
+    title text,
+    speaker_id int references attendees(id)
+  );
+  ```
+]
+
+#slide[
+  == Finding my talks...
+  ```sql
+  SELECT talks.title FROM talks
+    JOIN attendees ON attendees.id=talks.speaker_id
+    WHERE attendees.name="Tibs";
+  ```
+  gives the results
+  ```text
+  This talk by me
+  Another talk by me
+  ```
+]
+
+#slide[
+  #image("diagrams/rdb-tables.svg", height: 120%)
 ]
 
 #slide[
@@ -217,8 +281,8 @@
   == When to use a relational database
 
   - Almost always a good place to start
-  - If you want ACID compliance as a given (caveat - do check!)
   - If your data fits
+    - It probably does...
   - Whatever you need to do, some RDB can probably do it, and likely fast enough
 
   ... but please still stay for the rest of this talk!
@@ -235,14 +299,48 @@
   == Characteristics of columnar databases
 
   - Essentially an optimisation of the relational idea
-  - Prioritises _columns_ over _rows_
-  - Aimed at large amounts of data with potentially large numbers of columns
-    - Not designed for normalised data
-    - Not really designed for handling joins
-  - Column operations fast (especially querying)
-  - Deleting or updating rows not so fast
-  - OLAP (online analytical processing)
+  - Store data as columns, not rows
+  - We know the column datatype, so we can *compress* column data
+    - Giving more efficient data storage
+    - Especially effective for data that doesn't change a lot
 
+  Aimed at large amounts of data with potentially large numbers of columns
+]
+
+#slide[
+  == What's fast, what's slow
+  - Adding new rows is fast
+  - Adding new columns is fast
+  - Querying a few columns out of many is fast
+
+  - Changing or deleting rows is slow
+]
+
+#slide[
+  == What data does that suit?
+
+  - Log data
+  - Sensor data
+  - Time series data in general
+
+  - Data stored for historical purposes
+]
+
+#slide[
+  == OLAP: Online Analytical Processing.
+
+  #quote(
+    block: true,
+    attribution: [
+      #link("https://clickhouse.com/docs/concepts/olap")[clickhouse.com/docs/concepts/olap]
+    ],
+    [
+      At the highest level, you can just read these words backward:
+      - *Processing*: some source data is processed ...
+      - *Analytical*: to produce some analytical reports and insights ...
+      - *Online*: in real-time.
+    ]
+  )
 ]
 
 #slide[
@@ -283,11 +381,16 @@
 
   *SQL*
 
-  _How close to standard is ClickHouse SQL?_
+  _It's still SQL 🙂_
 ]
 
 #slide[
   == More about ClickHouse
+
+  - Records don't have to have a unique primary key
+    - Although having one can help
+  - "Full fledged" transactions aren't supported
+    - But this is less important if the main operation is adding new records and querying
 ]
 
 #slide[
@@ -297,8 +400,7 @@
 
   - When you have lots of columns and want to query relatively few
   - When you have a lot of data
-  - When denormalised data is an advantage
-  - When you are generally adding new data, not changing it
+    - Which you don't want to alter
 ]
 
 #slide[
@@ -308,8 +410,21 @@
 ]
 
 #slide[
+  == Document database concepts
+
+  - _Documents_ are essentially JSON
+  - An _index_ is a collection of documents
+  - When you search (for a word) you get back all documents that matched, with a
+    _relevance score_ for how well they matched
+  - To scale, indexes are split into _shards_, each with a subset of the documents.
+]
+
+#slide[
   == Characteristics of document databases
 
+  - Relatively unstructured data
+  - But want indexing
+  - And rich querying
 ]
 
 #slide[
@@ -349,9 +464,18 @@
 //
 // OpenSearch deducing the schema for you can have all the problems you
 // should expect that to give!
+//
+
+#slide[
+  == Picture of some analytics
+]
 
 #slide[
   == When to use a document database
+
+  - Fast, scalable full text search
+  - Storage of indexable JSON documents
+  - In the case of OpenSearch, sophisticated analytics visualisation
 ]
 
 #slide[
@@ -383,18 +507,32 @@
   Its own protocol, with its own CLI
 
   It's actually rather lovely...
+
+  The operation used determines how the value is interpreted
+
+  ```
+  SET this_key "Hello" EX 60
+  HSET this_hash field1 "Hello"
+  LSET this_list 0 "zero"
+  JSON.SET this_json . '{"a":{"a":1, "b":2, "c":3}}'
+  ```
 ]
 
 #slide[
   == More about ValKey
 
+  - In-memory, but persistent do disk
   - Think like a Python dictionary!
-  - "Obvious" use is for caching
-    - but there's much more than that, including some nice pub/sub messaging support
+  - "Obvious" use is for caching, with the value expiry support
+  - but also pub/sub support (SUBSCRIBE, UNSUBSCRIBE, PUBLISH)
+  - and message queues (Streams provide an append-only log)
+  - and because of its sophisticated value datatypes (geospatial indexing!)
 ]
 
 #slide[
   == When to use a key value database
+
+  - When your data fits the "key" -> "value" idea
 ]
 
 // Remember, nice programmers don't let other programmers do messaging using an RDB,
@@ -475,6 +613,11 @@
 
 #slide[
   == When to use a graph database
+
+  - When you have a knowledge graph shaped puzzle
+  - When you want that flexibility to build structures as you learn them (note: Neo4J specific)
+  - Although you _can_ represent graph data in relational systems, you're missing out on
+    the community of graph-based solutions that come with a mature graph database
 ]
 
 #slide[
@@ -483,8 +626,8 @@
   - ACID compliance [citation needed]
   - Transactions
   - Extensibility
-  - Vector search
-  - JSON support
+  - Vector search (ValKey not yet, SQLite there's an extension)
+  - JSON support (ValKey sort of, SQLite not so much)
 ]
 
 // Extra slide - probably won't need / have time for

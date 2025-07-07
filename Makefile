@@ -21,9 +21,9 @@ slides:
 html:
 	typst compile --features html -f html slides.typ
 
-.PHONY: diagram
-diagram:
-	d2 diagram.d2 diagram.png
+.PHONY: diagrams
+diagrams:
+	d2 --layout=elk diagrams/rdb-tables.d2 diagrams/rdb-tables.svg
 
 .PHONY: clean
 clean:
