@@ -1,6 +1,10 @@
 // Get Polylux from the official package repository
 #import "@preview/polylux:0.4.0": *
 
+// Fletcher for diagrams
+#import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
+#import fletcher.shapes: pill, chevron
+
 // Make the paper dimensions fit for a presentation and the text larger
 #set page(paper: "presentation-16-9")
 
@@ -113,48 +117,40 @@
 #slide[
   == Relational
 
-  `<picture of table>`
+  A table called *talks*
+
+  #table(
+    columns: 3, align: (right, left, left),
+    fill: (x, y) => if y == 0 { luma(240) },
+    [*id*], [*title*], [*speaker*],
+    [1], [This talk by me], [Tibs],
+    [2], [Another talk by me], [Tibs],
+    [3], [John's talk], [John Smith],
+  )
 ]
 
 #slide[
-  == Codd and relational theory
+  == Edgar F. Codd and relational theory
 
-  - 1970 paper "A Relational Model of Data for Large Shared Data Banks"
-  - _Relation_ is his mathematical term for what we now call a table
+  - 1970 "A Relational Model of Data for Large Shared Data Banks"
+    - Just simple enough
+    - Just abstract enough
+    - Represent just about anything
+
   - Contrasted with less flexible tree and network approaches
-  - Just simple enough; just abstract enough; represent just about anything
+  - _Relation_ #sym.equiv  table
   - Took until the mid-1980s to "win"
 
 ]
 
-//
-
 // But note that Codd's rules are an abstract ideal, and real databases can
 // diverge from them for practical reasons
-
-#slide[
-  == Characteristics of relational databases
-
-  - Tables and rows and columns
-  - Schema design up front
-  - Transactions (pretty much always)
-  // - ACID (_explain *very* briefly_)
-  // - OLTP (online transaction processing)
-]
 
 // Modern RDBs can have quite sophisticated column types, including JSON/JSONB,
 // arrays (and thus embedded vectors), binary blobs, _what else that's interesting?_
 
 #slide[
   == Relational tables
-
-  #show figure.where(
-    kind: table
-  ): set figure.caption(position: top)
-
-  #show figure.caption: it => [
-    Table #it.body
-  ]
 
   #grid(
     columns: 2,
@@ -186,14 +182,14 @@
   == How to create those tables
   ```SQL
   CREATE TABLE attendees (
-    id int generated always as identity primary key,
-    name text,
+    id INT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
   );
 
   CREATE TABLE talks (
-    id int generated always as identity primary key,
-    title text,
-    speaker_id int references attendees(id)
+    id INT NOT NULL PRIMARY KEY,
+    title TEXT NOT NULL,
+    speaker_id INT REFERENCES attendees(id)
   );
   ```
 ]
@@ -213,16 +209,31 @@
 ]
 
 #slide[
-  #image("diagrams/rdb-tables.svg", height: 120%)
+  == Characteristics of relational databases
+
+  - Tables and rows and columns
+  - Schema design up front
+  - Transactions (pretty much always)
+  // - ACID (_explain *very* briefly_)
+  // - OLTP (online transaction processing)
 ]
+
+// #slide[
+//   #image("diagrams/rdb-tables.svg", height: 120%)
+// ]
 
 #slide[
   == Queries
 
   *SQL*
 
-  Standardised in ...
+  - Originates in the 1970s
+  - Originally called "SEQUEL" (Structured English Query Language)
+  - Standardised in the 1980s
+  - Latest version 2023
 ]
+
+// SEQUEL may have been a pun (or a dig) at Ingres's QUEL query language
 
 #slide[
   == Relational example 1: PostgreSQL®
@@ -341,6 +352,8 @@
       - *Online*: in real-time.
     ]
   )
+
+  In contrast to OLTP (Online Transaction Processing)
 ]
 
 #slide[
@@ -467,7 +480,9 @@
 //
 
 #slide[
-  == Picture of some analytics
+  == A dashboard about mastodon messages
+
+  #image("images/blog-kafka-mastodon-2-past-15-minutes.png", height: 80%)
 ]
 
 #slide[
@@ -481,7 +496,34 @@
 #slide[
   == Key Value
 
-  `<picture of a dictionary 🙂 >`
+
+  //#show figure.where(
+  //  kind: table
+  //): set figure.caption(position: top)
+
+  #show figure.caption: it => [
+    \
+    #it.body
+  ]
+
+
+  #figure(
+    diagram(
+      node-fill: teal.lighten(50%),
+      spacing: 1em,
+
+      node( (0,0), [key1], shape: chevron, outset: 5pt ),
+      edge("=>"),
+      node( (2,0), [value1], shape: pill, outset: 5pt ),
+      node( (0,1), [key2], shape: chevron, outset: 5pt ),
+      edge("=>"),
+      node( (2,1), [value2], shape: pill, outset: 5pt ),
+      node( (0,2), [key3], shape: chevron, outset: 5pt ),
+      edge("=>"),
+      node( (2,2), [value3], shape: pill, outset: 5pt ),
+    ),
+    caption: [A picture of a dictionary 🙂]
+  )
 ]
 
 #slide[
@@ -521,7 +563,7 @@
 #slide[
   == More about ValKey
 
-  - In-memory, but persistent do disk
+  - In-memory, but persistent to disk
   - Think like a Python dictionary!
   - "Obvious" use is for caching, with the value expiry support
   - but also pub/sub support (SUBSCRIBE, UNSUBSCRIBE, PUBLISH)
@@ -533,6 +575,12 @@
   == When to use a key value database
 
   - When your data fits the "key" -> "value" idea
+  - Caching (for instance, URL -> page results)
+  - Valkey:
+    - when you want your data to expire
+    - pub/sub messaging
+    - message queues
+    - for its datatypes
 ]
 
 // Remember, nice programmers don't let other programmers do messaging using an RDB,
@@ -541,25 +589,59 @@
 #slide[
   == Graph
 
-  `<picture of object graph>`, *not* `picture of XY data graph`
+  #diagram(
+
+  node-fill: teal.lighten(50%),
+  spacing: 1em,
+
+  node( (0,0), [node1], name: <n1>, shape: circle, outset: 1pt ),
+  node( (3,2), [node2], name: <n2>, shape: circle, outset: 1pt ),
+  node( (1,4), [node3], name: <n3>, shape: circle, outset: 1pt ),
+  node( (5,4), [node4], name: <n4>, shape: circle, outset: 1pt ),
+    edge(<n1>, "->", <n2>, label: [relA], label-size: 0.8em, label-sep: 0pt, label-angle: auto),
+    edge(<n2>, "->", <n3>, label: [relB], label-size: 0.8em, label-sep: 0pt, label-angle: auto),
+    edge(<n3>, "->", <n4>, label: [relC], label-size: 0.8em, label-sep: 0pt, label-angle: auto),
+    edge(<n4>, "->", <n2>, label: [relD], label-size: 0.8em, label-sep: 0pt, label-angle: auto),
+  )
+
+ *not* an XY data graph 🙂
 ]
 
 // I mean, this slide is way too long
 #slide[
   == Characteristics of graph databases
 
-  - _Nodes_ and _relations_
-    - (or _objects_ and _relations_, or _nodes_ and _edges_, or ...)
-  - Both can have attributes (I have opinions)
-  - Relations are (should be) bidirectional
-  - Relations are 1:1 or 1:many (and thus many:1 because bidirectional)
+ _Nodes_, _relationships_ and _properties_
+
+  - or _objects_, _references_ and _attributes_
+  - or _nodes_, _edges_ and _values_
+  - or ...
+]
+
+#slide[
+  == Nodes
+
+  Nodes have
+  - a type
+  - properties
+  - are linked by relationships
+]
+
+#slide[
+  == Relationships
+
+  Relationships
+  - are between nodes
+  - are 1:1 or 1:many
+  - *may* be single or bidirectional (I have opinions)
+  - *may* have properties (I have opinions)
 ]
 
 #slide[
   == Graph database schemas
 
   - Objects have a type which says what relationships and attributes they can have
-  - Relations have a type (name?) which says what object types they can relate, and what attributes they can have
+  - Relationships have a type (name?) which says what object types they can relate, and what attributes they can have
 ]
 
 // Gothic and my own experience, but briefly
@@ -599,16 +681,43 @@
     relationships rather than static tables — yet enjoys all the benefits of
     enterprise-quality database.
   ]
-
-  - Schema (node and relation types) are implicit.
-
-    _Can they be defined up front? Check what current practices are._
 ]
 
 #slide[
-  == Queries
+  == More about Neo4J nodes
 
-  ???
+  - Nodes
+    - are tagged with _labels_ (to indicate their role)
+    - have any number of key:value properties
+    - be indexed
+    - have constraints on their content
+]
+
+#slide[
+  == More about Neo4J relationships
+
+  - Relationships
+    - have a name
+    - must have a type, a start node and an end node
+    - must have a direction
+    - can have properties
+]
+
+#slide[
+  == Queries: Neo4J has Cypher
+
+  ```
+  CREATE (p:Person
+    {name:'Sally'})-[r:IS_FRIENDS_WITH]->
+      (p:Person {name:'John'}
+  )
+  ```
+  ```
+  MATCH p=shortestPath(
+    (bacon:Person {name:"Kevin Bacon"})-[*]-
+      (meg:Person {name:"Meg Ryan"})
+  ) RETURN p
+  ```
 ]
 
 #slide[
