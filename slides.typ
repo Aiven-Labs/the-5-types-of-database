@@ -63,6 +63,21 @@
   if it.attribution != none [ -- #text(size:20pt)[#it.attribution]]
 }
 
+// Give a very light grey background to code blocks
+#show raw.where(block: true): it => block(
+  fill: luma(240),
+  inset: 5pt,
+  it
+)
+
+// But be more subtle with inline code
+#show raw.where(block: false): box.with(
+  fill: luma(240),
+  inset: (x: 3pt, y: 0pt),
+  outset: (y: 3pt),
+)
+
+
 // Use #slide to create a slide and style it using your favourite Typst functions
 #slide[
   #set align(horizon)
@@ -117,15 +132,15 @@
 #slide[
   == Relational
 
-  A table called *talks*
+  A table called *books*
 
   #table(
     columns: 3, align: (right, left, left),
     fill: (x, y) => if y == 0 { luma(240) },
-    [*id*], [*title*], [*speaker*],
-    [1], [This talk by me], [Tibs],
-    [2], [Another talk by me], [Tibs],
-    [3], [John's talk], [John Smith],
+    [*id*], [*title*], [*author*],
+    [1], [This Book], [Tibs],
+    [2], [That Book], [Tibs],
+    [3], [John's Book], [John Smith],
   )
 ]
 
@@ -176,16 +191,16 @@
     columns: 2,
     row-gutter: 2em,
     column-gutter: 10.0pt,
-    [*talks*],
+    [*books*],
     table(
       columns: 3, align: (right, left, right),
       fill: (x, y) => if y == 0 { luma(240) },
-      [*id*], [*title*], [*speaker_id*],
-      [1], [This talk by me], text(red)[273],
-      [2], [Another talk by me], text(red)[273],
-      [3], [John's talk], text(blue)[301],
+      [*id*], [*title*], [*author_id*],
+      [1], [This Book], text(red)[273],
+      [2], [That Book], text(red)[273],
+      [3], [John's Book], text(blue)[301],
     ),
-    [*attendees*],
+    [*authors*],
     table(
       columns: 2, align: (right, left),
       fill: (x, y) => if y == 0 { luma(240) },
@@ -199,17 +214,38 @@
 ]
 
 #slide[
+  == Concept: SQL
+
+  #quote(
+    attribution: [
+      #link("https://en.wikipedia.org/wiki/SQL")[en.wikipedia.org/wiki/SQL]
+    ],
+    [
+      a domain-specific language used to manage data, especially in a
+      relational database management system
+    ]
+  )
+
+  - Originates in the 1970s
+  - Originally called "SEQUEL" (Structured English Query Language)
+  - Standardised in the 1980s
+  - Latest version 2023
+]
+
+// SEQUEL may have been a pun (or a dig) at Ingres's QUEL query language
+
+#slide[
   == How to create those tables
   ```SQL
-  CREATE TABLE attendees (
+  CREATE TABLE authors (
     id INT NOT NULL PRIMARY KEY,
     name TEXT NOT NULL,
   );
 
-  CREATE TABLE talks (
+  CREATE TABLE books (
     id INT NOT NULL PRIMARY KEY,
     title TEXT NOT NULL,
-    speaker_id INT REFERENCES attendees(id)
+    author_id INT REFERENCES authors(id)
   );
   ```
 ]
@@ -217,27 +253,29 @@
 #slide[
   == Finding my talks...
   ```sql
-  SELECT talks.title FROM talks
-    JOIN attendees ON attendees.id=talks.speaker_id
-    WHERE attendees.name="Tibs";
+  SELECT books.title FROM books
+    JOIN authors ON authors.id=books.author_id
+    WHERE authorss.name="Tibs";
   ```
   gives the results
   ```text
-  This talk by me
-  Another talk by me
+  This book
+  That book
   ```
 ]
 
 #slide[
-  == Transactions
+  == Concept: Transactions
 
   - If data is split between multiple tables
-  - then we'll need to change multiple tables "at the same time"
+    - then we'll need to change multiple tables "at the same time"
   - Transactions let us do this
 
-  1. START a transaction
+  #v(20pt)
+
+  1. `START` a transaction
   2. Do all the edits
-  3. Either COMMIT or ROLLBACK
+  3. Either `COMMIT` or `ROLLBACK`
 ]
 
 #slide[
@@ -245,28 +283,29 @@
 
   ```sql
   START TRANSACTION;
-  UPDATE attendees SET name = "Eric Smith" WHERE id = 301;
-  UPDATE talks SET name = "Eric's talk" WHERE id = 3;
+  UPDATE authors SET name = "Eric Smith" WHERE id = 301;
+  UPDATE books SET name = "Eric's book" WHERE id = 3;
   COMMIT;
   ```
 
     #grid(
-      columns: 2,
+      columns: 3,
       row-gutter: 2em,
       column-gutter: 10.0pt,
+      [gives],
       table(
         columns: 3, align: (right, left, right),
         fill: (x, y) => if y in (0, 1) { luma(240) },
-        table.cell(align: left, colspan: 3, [*talks*]),
-        [*id*], [*title*], [*speaker_id*],
-        [1], [This talk by me], text(red)[273],
-        [2], [Another talk by me], text(red)[273],
-        [3], text(olive)[Eric's talk], text(blue)[301],
+        table.cell(align: left, colspan: 3, [*books*]),
+        [*id*], [*title*], [*author_id*],
+        [1], [This Book], text(red)[273],
+        [2], [That Book], text(red)[273],
+        [3], text(olive)[Eric's Book], text(blue)[301],
       ),
       table(
         columns: 2, align: (right, left),
         fill: (x, y) => if y in (0, 1) { luma(240) },
-        table.cell(align: left, colspan: 2, [*attendees*]),
+        table.cell(align: left, colspan: 2, [*authors*]),
         [*id*], [*name*],
         text(red)[273], [Tibs],
         text(blue)[301], text(olive)[Eric Smith],
@@ -283,56 +322,6 @@
   - Transactions (pretty much always)
     - OLTP (online transaction processing)
 ]
-
-// #slide[
-//   #image("diagrams/rdb-tables.svg", height: 120%)
-// ]
-
-/*
-#import "@preview/herodot:0.1.0" : *
-#let sql-timeline = timeline(
-  startyear: 1970,
-  endyear: 2025,
-  interval: 50,
-  events: (
-    event(
-      title: "SEQUEL posited",
-      year: 1970,
-    ),
-    event(
-      title: "Name changed to SQL",
-      year: 1975,
-    ),
-    event(
-      title: "ANSI Standard",
-      year: 1980,
-    ),
-    event(
-      title: "Latest version",
-      year: 2023,
-    ),
-  )
-)
-
-#slide[
-  == SQL timeline
-
-  #sql-timeline
-]
-*/
-
-#slide[
-  == Queries
-
-  *SQL*
-
-  - Originates in the 1970s
-  - Originally called "SEQUEL" (Structured English Query Language)
-  - Standardised in the 1980s
-  - Latest version 2023
-]
-
-// SEQUEL may have been a pun (or a dig) at Ingres's QUEL query language
 
 #slide[
   == Relational example 1: PostgreSQL®
@@ -406,6 +395,12 @@
 ]
 
 #slide[
+  == Compressing columns
+
+  `<picture of table with columns slightly separated, showing how they're compressed>`
+]
+
+#slide[
   == Characteristics of columnar databases
 
   - Essentially an optimisation of the relational idea
@@ -437,7 +432,7 @@
 ]
 
 #slide[
-  == OLAP: Online Analytical Processing.
+  == Concept: OLAP -- Online Analytical Processing.
 
   #quote(
     block: true,
@@ -453,12 +448,6 @@
   )
 
   In contrast to OLTP (Online Transaction Processing)
-]
-
-#slide[
-  == Compressing columns
-
-  `<picture of table with columns slightly separated, showing how they're compressed>`
 ]
 
 #slide[
@@ -493,7 +482,9 @@
 
   *SQL*
 
-  _It's still SQL 🙂_
+  It's still SQL 🙂
+
+  - With some extras and useful utility functions
 ]
 
 #slide[
@@ -501,9 +492,14 @@
 
   - Records don't have to have a unique primary key
     - Although having one can help
+
   - "Full fledged" transactions aren't supported
-    - But this is less important if the main operation is adding new records and querying
+    - Do we really need them for OLTP?
 ]
+
+// https://clickhouse.com/docs/guides/developer/transactional
+// Describes the limitations, and then explains some _experimental_ transaction support
+// (it's not available in ClickHouse Cloud, nor does Aiven enable it)
 
 #slide[
   == Create book sales table
@@ -511,15 +507,15 @@
   #toolbox.side-by-side[
   ```sql
   CREATE TABLE book_sales (
-    sale_time DateTime,
+    dt DateTime,
     id UUID,
     title String,
     price Decimal(8,2),
     quantity Int,
     customer_id UUID,
   ) ENGINE = MergeTree()
-  PARTITION BY toYYMM(sale_time)
-  ORDER BY (title, sale_time)
+  PARTITION BY toYYMM(dt)
+  ORDER BY (title, dt)
   ```
   ][
   Find the 10 top sellers
@@ -548,7 +544,7 @@
 
   ```json
   {
-    "title": "A very good book",
+    "title": "This Book",
     "author": "Tibs",
     "isbn": null,
     "publisher": "self-published",
@@ -612,26 +608,14 @@
 //
 
 #slide[
-  == Queries: Lucene syntax
-  ```python
-  client = OpenSearch(SERVICE_URI, use_ssl=True)
-
-  client.search({
-      index: 'recipes',
-      q: 'ingredients:broccoli AND calories:(>=100 AND <200)'
-  })
-  ```
-]
-
-#slide[
   == Queries: Query DSL
 
   ```python
     query_body = {
       "query": {
         "bool": {
-           must": {"match": {"categories": "Quick & Easy"}},
-           must_not": {"match": {"ingredients": "garlic"}},
+           must": {"match": {"author": "Tibs"}},
+           must_not": {"match": {"title": "That Book"}},
         }
       }
     }
@@ -640,14 +624,30 @@
 ]
 
 #slide[
+  == Queries: Lucene syntax
+  ```python
+  client = OpenSearch(SERVICE_URI, use_ssl=True)
+
+  client.search({
+      index: 'recipes',
+      q: 'author:Tibs AND title: (-That Book)'
+  })
+  ```
+]
+
+#slide[
   == Queries: SQL
 
   ```
   curl -XPOST https://localhost:9200/_plugins/_sql \
-      -u 'admin:<custom-admin-password>' -k \
-      -H 'Content-Type: application/json' \
-      -d '{"query": "SELECT * FROM my-index* LIMIT 50"}'
+      -u 'admin:<custom-admin-password>'           \
+      --insecure                                   \
+      -H 'Content-Type: application/json'          \
+      -d '{"query": "SELECT * FROM my-index*'      \
+         '  WHERE title <> "That Book"}'
   ```
+
+  #align(right)[#text(size: 20pt, fill:gray, [untested code!])]
 ]
 
 #slide[
@@ -683,15 +683,23 @@
       node-fill: teal.lighten(50%),
       spacing: 1em,
 
-      node( (0,0), [key1], shape: chevron, outset: 5pt ),
+      node( (0,0), [author:Tibs], shape: chevron, outset: 5pt ),
       edge("=>"),
-      node( (2,0), [value1], shape: pill, outset: 5pt ),
-      node( (0,1), [key2], shape: chevron, outset: 5pt ),
+      node( (2,0), [{'id':273, 'name':'Tibs'}], shape: rect, outset: 5pt ),
+      node( (0,1), [book:This Book], shape: chevron, outset: 5pt ),
       edge("=>"),
-      node( (2,1), [value2], shape: pill, outset: 5pt ),
-      node( (0,2), [key3], shape: chevron, outset: 5pt ),
+      node( (2,1), align(left)[
+        'id': 1,
+        'title': 'This Book',\
+        'author': 'Tibs'
+      ], shape: rect, outset: 5pt ),
+      node( (0,2), [book: That Book], shape: chevron, outset: 5pt ),
       edge("=>"),
-      node( (2,2), [value3], shape: pill, outset: 5pt ),
+      node( (2,2), align(left)[
+        'id': 2,
+        'title': 'That Book',\
+        'author': 'Tibs'
+      ], shape: rect, outset: 5pt ),
     ),
     caption: [A picture of a dictionary 🙂]
   )
@@ -699,6 +707,12 @@
 
 #slide[
   == Characteristics of key value databases
+
+  - Fast
+
+  - Simple
+
+  - Sophisticated value data types
 
 ]
 
@@ -757,11 +771,14 @@
   == More about ValKey
 
   - In-memory, but persistent to disk
+
   - Think like a Python dictionary!
-  - "Obvious" use is for caching, with the value expiry support
-  - but also pub/sub support (SUBSCRIBE, UNSUBSCRIBE, PUBLISH)
-  - and message queues (Streams provide an append-only log)
-  - and because of its sophisticated value datatypes (geospatial indexing!)
+
+  - Use cases include
+    - Data storage and retrieval
+    - Caching, leveraging the value expiry support
+    - Pub/Sub messaging (`SUBSCRIBE`, `UNSUBSCRIBE`, `PUBLISH`)
+    - Streams (append-only log) for message queues (`XADD`, `XREAD`)
 ]
 
 #slide[
@@ -797,8 +814,8 @@
   node-fill: teal.lighten(50%),
   spacing: 1em,
 
-    node( (0,0), [This book], name: <book1>, shape: pill, outset: 1pt, fill: green),
-    node( (9,0), [That book], name: <book2>, shape: pill, outset: 1pt, fill: green),
+    node( (0,0), [This Book], name: <book1>, shape: pill, outset: 1pt, fill: green),
+    node( (9,0), [That Book], name: <book2>, shape: pill, outset: 1pt, fill: green),
     node( (4,2), [Tibs], name: <tibs>, shape: circle, outset: 1pt ),
     node( (4,5), [Alan], name: <alan>, shape: circle, outset: 1pt ),
     node( (8,5), [John], name: <john>, shape: circle, outset: 1pt ),
@@ -822,7 +839,6 @@
 
   - or _objects_, _references_ and _attributes_
   - or _nodes_, _edges_ and _values_
-  - or ...
 
   Schemas might be implicit, gradual or designed up-front
 ]
@@ -898,11 +914,13 @@
   == Queries: Neo4J has Cypher
 
   ```
-  CREATE (p:Person
-    {name:'Sally'})-[r:IS_FRIENDS_WITH]->
-      (p:Person {name:'John'}
+  CREATE (p:Book
+    {name:'This Book'})-[r:IS_WRITTEN_BY]->
+      (p:Person {name:'Tibs'}
   )
   ```
+
+  From Neo4J's own examples:
   ```
   MATCH p=shortestPath(
     (bacon:Person {name:"Kevin Bacon"})-[*]-
@@ -918,10 +936,9 @@
 #slide[
   == When to use a graph database
 
-  - When you have a knowledge graph shaped puzzle
-  - When you want that flexibility to build structures as you learn them (note: Neo4J specific)
-  - Although you _can_ represent graph data in relational systems, you're missing out on
-    the community of graph-based solutions that come with a mature graph database
+  - You have a knowledge graph shaped puzzle
+  - Neo4J: You want to build structures as you learn them
+  - Neo4J: You want to leverage existing techniques & solutions
 ]
 
 #slide[
