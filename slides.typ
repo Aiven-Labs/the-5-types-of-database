@@ -132,16 +132,36 @@
 #slide[
   == Edgar F. Codd and relational theory
 
-  - 1970 "A Relational Model of Data for Large Shared Data Banks"
-    - Just simple enough
-    - Just abstract enough
-    - Represent just about anything
+  #let codd-image = context[
+    #show figure.caption: it => [
+      #it.body
+    ]
+    #figure(
+      image("images/Edgar_F_Codd.jpg"), //, height:50pt)
+      caption: text(size: 10pt, fill:gray)[
+        Picture of Edgar "Ted" Codd from #link("https://en.wikipedia.org/wiki/Edgar_F._Codd/")[wikipedia]
+      ]
+    )
+  ]
 
-  - Contrasted with less flexible tree and network approaches
+  #grid(
+    columns: 2,
+    codd-image,
+    [
+      1970 "A Relational Model of Data for Large Shared Data Banks"
+      - Just simple enough
+      - Just abstract enough
+      - Represent just about anything
+    ]
+  )
+
+  //- Contrasted with less flexible tree and network approaches
   - _Relation_ #sym.equiv  table
   - Took until the mid-1980s to "win"
 
 ]
+
+// Codd as the grandaddy of relational databases
 
 // But note that Codd's rules are an abstract ideal, and real databases can
 // diverge from them for practical reasons
@@ -209,18 +229,97 @@
 ]
 
 #slide[
+  == Transactions
+
+  - If data is split between multiple tables
+  - then we'll need to change multiple tables "at the same time"
+  - Transactions let us do this
+
+  1. START a transaction
+  2. Do all the edits
+  3. Either COMMIT or ROLLBACK
+]
+
+#slide[
+  == Transaction example
+
+  ```sql
+  START TRANSACTION;
+  UPDATE attendees SET name = "Eric Smith" WHERE id = 301;
+  UPDATE talks SET name = "Eric's talk" WHERE id = 3;
+  COMMIT;
+  ```
+
+    #grid(
+      columns: 2,
+      row-gutter: 2em,
+      column-gutter: 10.0pt,
+      table(
+        columns: 3, align: (right, left, right),
+        fill: (x, y) => if y in (0, 1) { luma(240) },
+        table.cell(align: left, colspan: 3, [*talks*]),
+        [*id*], [*title*], [*speaker_id*],
+        [1], [This talk by me], text(red)[273],
+        [2], [Another talk by me], text(red)[273],
+        [3], text(olive)[Eric's talk], text(blue)[301],
+      ),
+      table(
+        columns: 2, align: (right, left),
+        fill: (x, y) => if y in (0, 1) { luma(240) },
+        table.cell(align: left, colspan: 2, [*attendees*]),
+        [*id*], [*name*],
+        text(red)[273], [Tibs],
+        text(blue)[301], text(olive)[Eric Smith],
+        [308], [John Smith],
+      ),
+  )
+]
+
+#slide[
   == Characteristics of relational databases
 
   - Tables and rows and columns
   - Schema design up front
   - Transactions (pretty much always)
-  // - ACID (_explain *very* briefly_)
-  // - OLTP (online transaction processing)
+    - OLTP (online transaction processing)
 ]
 
 // #slide[
 //   #image("diagrams/rdb-tables.svg", height: 120%)
 // ]
+
+/*
+#import "@preview/herodot:0.1.0" : *
+#let sql-timeline = timeline(
+  startyear: 1970,
+  endyear: 2025,
+  interval: 50,
+  events: (
+    event(
+      title: "SEQUEL posited",
+      year: 1970,
+    ),
+    event(
+      title: "Name changed to SQL",
+      year: 1975,
+    ),
+    event(
+      title: "ANSI Standard",
+      year: 1980,
+    ),
+    event(
+      title: "Latest version",
+      year: 2023,
+    ),
+  )
+)
+
+#slide[
+  == SQL timeline
+
+  #sql-timeline
+]
+*/
 
 #slide[
   == Queries
@@ -407,11 +506,39 @@
 ]
 
 #slide[
+  == Create book sales table
+
+  #toolbox.side-by-side[
+  ```sql
+  CREATE TABLE book_sales (
+    sale_time DateTime,
+    id UUID,
+    title String,
+    price Decimal(8,2),
+    quantity Int,
+    customer_id UUID,
+  ) ENGINE = MergeTree()
+  PARTITION BY toYYMM(sale_time)
+  ORDER BY (title, sale_time)
+  ```
+  ][
+  Find the 10 top sellers
+  ```sql
+  SELECT
+    id, title, sum(quantity) AS
+       total_quantity
+  FROM book_sales
+  GROUP BY id
+  ORDER BY total_quantity DESC LIMIT 10
+  ```
+  ]
+]
+
+#slide[
   == When to use a columnar database
 
-  _Need to work on this!_
-
-  - When you have lots of columns and want to query relatively few
+  - When you want to query on columns not rows
+  - When you have lots of columns
   - When you have a lot of data
     - Which you don't want to alter
 ]
@@ -419,7 +546,17 @@
 #slide[
   == Document
 
-  `<picture of a JSON document>`
+  ```json
+  {
+    "title": "A very good book",
+    "author": "Tibs",
+    "isbn": null,
+    "publisher": "self-published",
+    "tags": ["nonFiction, humour"]
+    "summary": "It's just very good",
+    "chapterContent": [<chapter 1>, <chapter 2>, ...]
+  }
+  ```
 ]
 
 #slide[
@@ -429,7 +566,6 @@
   - An _index_ is a collection of documents
   - When you search (for a word) you get back all documents that matched, with a
     _relevance score_ for how well they matched
-  - To scale, indexes are split into _shards_, each with a subset of the documents.
 ]
 
 #slide[
@@ -438,6 +574,8 @@
   - Relatively unstructured data
   - But want indexing
   - And rich querying
+  - OLTP - Store and query rather than update
+  - No transactions
 ]
 
 #slide[
@@ -449,12 +587,6 @@
     OpenSearch is an open-source, enterprise-grade search and observability
     suite that brings order to unstructured data at scale
   ]
-]
-
-#slide[
-  == Queries
-
-  HTTP requests JSON structures
 ]
 
 #slide[
@@ -478,6 +610,45 @@
 // OpenSearch deducing the schema for you can have all the problems you
 // should expect that to give!
 //
+
+#slide[
+  == Queries: Lucene syntax
+  ```python
+  client = OpenSearch(SERVICE_URI, use_ssl=True)
+
+  client.search({
+      index: 'recipes',
+      q: 'ingredients:broccoli AND calories:(>=100 AND <200)'
+  })
+  ```
+]
+
+#slide[
+  == Queries: Query DSL
+
+  ```python
+    query_body = {
+      "query": {
+        "bool": {
+           must": {"match": {"categories": "Quick & Easy"}},
+           must_not": {"match": {"ingredients": "garlic"}},
+        }
+      }
+    }
+    resp = client.search(index=INDEX_NAME, body=query_body)
+  ```
+]
+
+#slide[
+  == Queries: SQL
+
+  ```
+  curl -XPOST https://localhost:9200/_plugins/_sql \
+      -u 'admin:<custom-admin-password>' -k \
+      -H 'Content-Type: application/json' \
+      -d '{"query": "SELECT * FROM my-index* LIMIT 50"}'
+  ```
+]
 
 #slide[
   == A dashboard about mastodon messages
@@ -544,6 +715,28 @@
 ]
 
 #slide[
+  == Datatypes
+
+  *Key*: a binary sequence
+
+  *Value*:
+  #toolbox.side-by-side[
+    - Strings
+    - Lists
+    - Sets and Sorted sets
+    - Hashes
+    - Streams
+  ][
+    - Geospatial indexes
+    - Bitmaps
+    - Bitfields
+    - Hyperloglog
+    - Bloom filter
+    - ...plus extensions
+  ]
+]
+
+#slide[
   == Queries
 
   Its own protocol, with its own CLI
@@ -586,6 +779,16 @@
 // Remember, nice programmers don't let other programmers do messaging using an RDB,
 // but ValKey is a sensible option
 
+/*
+    "title": "A very good book",
+    "author": "Tibs",
+    "isbn": null,
+    "publisher": "self-published",
+    "tags": ["nonFiction, humour"]
+    "summary": "It's just very good",
+    "chapterContent": [<chapter 1>, <chapter 2>, ...]
+*/
+
 #slide[
   == Graph
 
@@ -594,14 +797,18 @@
   node-fill: teal.lighten(50%),
   spacing: 1em,
 
-  node( (0,0), [node1], name: <n1>, shape: circle, outset: 1pt ),
-  node( (3,2), [node2], name: <n2>, shape: circle, outset: 1pt ),
-  node( (1,4), [node3], name: <n3>, shape: circle, outset: 1pt ),
-  node( (5,4), [node4], name: <n4>, shape: circle, outset: 1pt ),
-    edge(<n1>, "->", <n2>, label: [relA], label-size: 0.8em, label-sep: 0pt, label-angle: auto),
-    edge(<n2>, "->", <n3>, label: [relB], label-size: 0.8em, label-sep: 0pt, label-angle: auto),
-    edge(<n3>, "->", <n4>, label: [relC], label-size: 0.8em, label-sep: 0pt, label-angle: auto),
-    edge(<n4>, "->", <n2>, label: [relD], label-size: 0.8em, label-sep: 0pt, label-angle: auto),
+    node( (0,0), [This book], name: <book1>, shape: pill, outset: 1pt, fill: green),
+    node( (9,0), [That book], name: <book2>, shape: pill, outset: 1pt, fill: green),
+    node( (4,2), [Tibs], name: <tibs>, shape: circle, outset: 1pt ),
+    node( (4,5), [Alan], name: <alan>, shape: circle, outset: 1pt ),
+    node( (8,5), [John], name: <john>, shape: circle, outset: 1pt ),
+    edge(<book1>, "->", <tibs>, label: [writtenBy], bend: 10deg, label-size: 0.8em, label-sep: 0pt, label-angle: auto),
+    edge(<book1>, "->", <tibs>, label: [publishedBy], bend: -10deg,label-size: 0.8em, label-sep: 0pt, label-angle: auto),
+    edge(<book2>, "->", <john>, label: [writtenBy], label-size: 0.8em, label-sep: 0pt, label-angle: auto),
+    edge(<book2>, "->", <tibs>, label: [publishedBy], bend: -10deg,label-size: 0.8em, label-sep: 0pt, label-angle: auto),
+    edge(<john>, "->", <tibs>, label: [actually], label-size: 0.8em, label-sep: 0pt, label-angle: auto),
+    edge(<john>, "->", <alan>, label: [actually], label-size: 0.8em, label-sep: 0pt, label-angle: auto),
+
   )
 
  *not* an XY data graph 🙂
@@ -616,6 +823,8 @@
   - or _objects_, _references_ and _attributes_
   - or _nodes_, _edges_ and _values_
   - or ...
+
+  Schemas might be implicit, gradual or designed up-front
 ]
 
 #slide[
@@ -635,13 +844,6 @@
   - are 1:1 or 1:many
   - *may* be single or bidirectional (I have opinions)
   - *may* have properties (I have opinions)
-]
-
-#slide[
-  == Graph database schemas
-
-  - Objects have a type which says what relationships and attributes they can have
-  - Relationships have a type (name?) which says what object types they can relate, and what attributes they can have
 ]
 
 // Gothic and my own experience, but briefly
@@ -665,22 +867,11 @@
       #link("https://github.com/neo4j/neo4j")[github.com/neo4j/neo4j]
     ],
     [
-      Neo4j is the world’s leading Graph Database. It is a high performance
-      graph store with all the features expected of a mature and robust
-      database, like a friendly query language and ACID transactions.    ]
+      The programmer works with a flexible network structure of nodes and
+      relationships rather than static tables — yet enjoys all the benefits of
+      enterprise-quality database.
+    ]
   )
-]
-
-#slide[
-  == More about Neo4J
-
-  Another quote
-
-  #quote[
-    The programmer works with a flexible network structure of nodes and
-    relationships rather than static tables — yet enjoys all the benefits of
-    enterprise-quality database.
-  ]
 ]
 
 #slide[
@@ -721,6 +912,10 @@
 ]
 
 #slide[
+  #image("images/KevinBaconToMegRyan.png")
+]
+
+#slide[
   == When to use a graph database
 
   - When you have a knowledge graph shaped puzzle
@@ -732,13 +927,18 @@
 #slide[
   == Things just about all the shapes give you
 
-  - ACID compliance [citation needed]
-  - Transactions
-  - Extensibility
-  - Vector search (ValKey not yet, SQLite there's an extension)
-  - JSON support (ValKey sort of, SQLite not so much)
+  - Transactions (not really OpenSearch)
+  - Extensibility (plugins, and so on)
+  - Vector embeddings (ValKey not yet, SQLite there's an extension)
+  - JSON support
 ]
 
+// https://neo4j.com/docs/operations-manual/current/database-internals/transaction-management/
+// "All modifications performed in a transaction are kept in memory. This
+// means that very large updates must be split into several transactions to
+// avoid running out of memory."
+
+/*
 // Extra slide - probably won't need / have time for
 #slide[
   == ACID and transactions
@@ -767,6 +967,7 @@
 
   (choose any 2)
 ]
+*/
 
 // https://en.wikipedia.org/wiki/ACID
 // https://en.wikipedia.org/wiki/CAP_theorem
