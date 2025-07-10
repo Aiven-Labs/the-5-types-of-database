@@ -21,10 +21,6 @@ slides:
 html:
 	typst compile --features html -f html slides.typ
 
-.PHONY: diagrams
-diagrams:
-	d2 --layout=elk diagrams/rdb-tables.d2 diagrams/rdb-tables.svg
-
 .PHONY: clean
 clean:
 	rm slides.pdf
@@ -33,6 +29,5 @@ clean:
 help:
 	@echo "make pdf           alias for `make slides`"
 	@echo "make slides        create slides.pdf from slides.typ"
-	@echo "make diagram       experimental - create a diagram"
 	@echo "make clean         delete slides.pdf"
 	@echo "make help          gives this help text"

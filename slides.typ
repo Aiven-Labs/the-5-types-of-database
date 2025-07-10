@@ -134,10 +134,11 @@
 
   A table called *books*
 
+  #show table.cell.where(y: 0): strong
   #table(
     columns: 3, align: (right, left, left),
     fill: (x, y) => if y == 0 { luma(240) },
-    [*id*], [*title*], [*author*],
+    table.header([id], [title], [author]),
     [1], [This Book], [Tibs],
     [2], [That Book], [Tibs],
     [3], [John's Book], [John Smith],
@@ -187,6 +188,7 @@
 #slide[
   == Relational tables
 
+  #show table.cell.where(y: 0): strong
   #grid(
     columns: 2,
     row-gutter: 2em,
@@ -195,7 +197,7 @@
     table(
       columns: 3, align: (right, left, right),
       fill: (x, y) => if y == 0 { luma(240) },
-      [*id*], [*title*], [*author_id*],
+      table.header([id], [title], [author_id]),
       [1], [This Book], text(red)[273],
       [2], [That Book], text(red)[273],
       [3], [John's Book], text(blue)[301],
@@ -204,7 +206,7 @@
     table(
       columns: 2, align: (right, left),
       fill: (x, y) => if y == 0 { luma(240) },
-      [*id*], [*name*],
+      table.header([id], [name]),
       text(red)[273], [Tibs],
       text(blue)[301], [John Smith],
       [308], [John Smith],
@@ -288,29 +290,31 @@
   COMMIT;
   ```
 
-    #grid(
-      columns: 3,
-      row-gutter: 2em,
-      column-gutter: 10.0pt,
-      [gives],
-      table(
-        columns: 3, align: (right, left, right),
-        fill: (x, y) => if y in (0, 1) { luma(240) },
-        table.cell(align: left, colspan: 3, [*books*]),
-        [*id*], [*title*], [*author_id*],
-        [1], [This Book], text(red)[273],
-        [2], [That Book], text(red)[273],
-        [3], text(olive)[Eric's Book], text(blue)[301],
-      ),
-      table(
-        columns: 2, align: (right, left),
-        fill: (x, y) => if y in (0, 1) { luma(240) },
-        table.cell(align: left, colspan: 2, [*authors*]),
-        [*id*], [*name*],
-        text(red)[273], [Tibs],
-        text(blue)[301], text(olive)[Eric Smith],
-        [308], [John Smith],
-      ),
+  // Can't use table.header for the tables because it can only be used
+  // for the first row, and I have two header rows...
+  #grid(
+    columns: 3,
+    row-gutter: 2em,
+    column-gutter: 10.0pt,
+    [gives],
+    table(
+      columns: 3, align: (right, left, right),
+      fill: (x, y) => if y in (0, 1) { luma(240) },
+      table.cell(align: left, colspan: 3, [*books*]),
+      [*id*], [*title*], [*author_id*],
+      [1], [This Book], text(red)[273],
+      [2], [That Book], text(red)[273],
+      [3], text(olive)[Eric's Book], text(blue)[301],
+    ),
+    table(
+      columns: 2, align: (right, left),
+      fill: (x, y) => if y in (0, 1) { luma(240) },
+      table.cell(align: left, colspan: 2, [*authors*]),
+      [*id*], [*name*],
+      text(red)[273], [Tibs],
+      text(blue)[301], text(olive)[Eric Smith],
+      [308], [John Smith],
+    ),
   )
 ]
 
@@ -318,8 +322,10 @@
   == Characteristics of relational databases
 
   - Tables and rows and columns
+
   - Schema design up front
-  - Transactions (pretty much always)
+
+  - Transactions #text(fill: gray)[(pretty much always)]
     - OLTP (online transaction processing)
 ]
 
@@ -341,10 +347,14 @@
   == More on PostgreSQL
 
   - Rich datatypes
+
   - Stored functions
+
   - Extensibility
+
   - Excellent documentation
-  - Pretty much always a good place to start
+
+  - Always a good place to start
 ]
 
 #slide[
@@ -363,11 +373,15 @@
   == More on SQLite
 
   - A library
+
   - Built into the Python standard library
     - It's everywhere
+
   - Single user
+
   - Slightly odd in some ways (schema is optional)
-  - Use it instead of #smallcaps(all: true)[JSON]/#smallcaps(all: true)[YAML]/#smallcaps(all: true)[TOML] for storing data locally!
+
+  - Use it instead of #smallcaps(all: true)[JSON]/#smallcaps(all: true)[YAML]/#smallcaps(all: true)[TOML] for local storage!
 ]
 
 // Defend that "slightly odd" - datatypes being limited, what else...
@@ -380,9 +394,12 @@
   == When to use a relational database
 
   - Almost always a good place to start
+
   - If your data fits
     - It probably does...
-  - Whatever you need to do, some RDB can probably do it, and likely fast enough
+
+  - Whatever you need to do, some RDB can probably do it
+    - and likely fast enough
 
   ... but please still stay for the rest of this talk!
 ]
@@ -391,26 +408,192 @@
 #slide[
   == Columnar
 
-  `<picture of table with columns slightly separated>`
-]
+  *book sales*
 
-#slide[
-  == Compressing columns
-
-  `<picture of table with columns slightly separated, showing how they're compressed>`
+  #table(
+    columns: 6,
+    align: (left, right, left, right, right, right),
+    fill: (x, y) => if y == 0 { luma(240) },
+    column-gutter: 20pt,
+    [*dt*], [*id*], [*title*], [*price*], [*quantity*], [*customer_id*],
+    text(size:20pt)[20250101 12:01], [1], [This Book], [5.20], [1], [1005],
+    text(size:20pt)[20250101 12:14], [1], [This Book], [4.50], [2], [923],
+    text(size:20pt)[20250101 19:27], [1], [This Book], [5.20], [1], [85],
+    text(size:20pt)[20250101 20:14], [3], [Eric's Book], [4.00], [1], [1002],
+    text(size:20pt)[20250101 20:14], [2], [That Book], [5.20], [1], [1002],
+  )
 ]
 
 #slide[
   == Characteristics of columnar databases
 
   - Essentially an optimisation of the relational idea
+
   - Store data as columns, not rows
+
   - We know the column datatype, so we can *compress* column data
     - Giving more efficient data storage
-    - Especially effective for data that doesn't change a lot
-
-  Aimed at large amounts of data with potentially large numbers of columns
+    - Good for data that doesn't change a lot
 ]
+
+#slide[
+  == Compressing columns
+
+  *book sales*
+
+  #show table.cell.where(y: 0): strong
+  #table(
+    columns: 6,
+    align: (left, right, left, right, right, right),
+    fill: (x, y) => if y == 0 { luma(240) },
+    column-gutter: 20pt,
+    table.header(
+      [dt], [id], [title], [price], [quantity], [customer_id],
+    ),
+    // row 1
+    text(size:20pt)[20250101 12:01],
+    table.cell(rowspan: 3, fill:yellow, [1]),
+    table.cell(rowspan: 3, fill:yellow, [This Book]),
+    [5.20],
+    [1],
+    [1005],
+    // row 2
+    text(size:20pt)[20250101 12:14],
+    // id spanned
+    // title spanned
+    [4.50],
+    [2],
+    [923],
+    // row 3
+    text(size:20pt)[20250101 19:27],
+    // id spanned
+    // title spanned
+    [5.20],
+    table.cell(rowspan: 3, fill:yellow, [1]),
+    [85],
+    // row 4
+    table.cell(rowspan: 2, fill: yellow, text(size:20pt)[20250101 20:14]),
+    [3],
+    [Eric's Book],
+    [4.00],
+    // quantity spanned
+    table.cell(rowspan: 2, fill:yellow, [1002]),
+    // row 5
+    // dt spanned
+    [2],
+    [That Book],
+    [5.20],
+    // quantity spanned
+    // customer_id spanned
+  )
+]
+
+#slide[
+  == Compressing columns - alternative view
+
+  *book sales*
+
+  #show table.cell.where(y: 0): strong
+  #table(
+    columns: 6,
+    align: (left, right, left, right, right, right),
+    fill: (x, y) => if y == 0 { luma(240) },
+    column-gutter: 20pt,
+    table.header(
+      [dt], [id], [title], [price], [quantity], [customer_id],
+    ),
+    // row 1
+    text(size:20pt)[20250101 12:01],
+    table.cell(fill:yellow, [1]),
+    table.cell(fill:yellow, [This Book]),
+    [5.20],
+    [1],
+    [1005],
+    // row 2
+    text(size:20pt)[20250101 12:14],
+    table.cell(stroke: none)[  ], // id spanned
+    table.cell(stroke: none)[  ], // title spanned
+    [4.50],
+    [2],
+    [923],
+    // row 3
+    text(size:20pt)[20250101 19:27],
+    table.cell(stroke: none)[  ], // id spanned
+    table.cell(stroke: none)[  ], // title spanned
+    [5.20],
+    table.cell(fill:yellow, [1]),
+    [85],
+    // row 4
+    table.cell(fill: yellow, text(size:20pt)[20250101 20:14]),
+    [3],
+    [Eric's Book],
+    [4.00],
+    table.cell(stroke: none)[  ], // quantity spanned
+    table.cell(fill:yellow, [1002]),
+    // row 5
+    table.cell(stroke: none)[  ], // dt spanned
+    [2],
+    [That Book],
+    [5.20],
+    table.cell(stroke: none)[  ], // quantity spanned
+    table.cell(stroke: none)[  ], // customer_id spanned
+  )
+]
+/* I think this view is confusing (although it was fun to make) so don't intend to use it
+#slide[
+  == Compressing columns - compressed view
+
+  *book sales*
+
+  #show table.cell.where(y: 0): strong
+  #table(
+    columns: 6,
+    align: (left, right, left, right, right, right),
+    fill: (x, y) => if y == 0 { luma(240) },
+    column-gutter: 20pt,
+    table.header(
+      [dt], [id], [title], [price], [quantity], [customer_id],
+    ),
+    // row 1
+    text(size:20pt)[20250101 12:01],
+    table.cell(fill:yellow, [1]),
+    table.cell(fill:yellow, [This Book]),
+    [5.20],
+    [1],
+    [1005],
+    // row 2
+    text(size:20pt)[20250101 12:14],
+    [3],
+    [Eric's Book],
+    [4.50],
+    [2],
+    [923],
+    // row 3
+    text(size:20pt)[20250101 19:27],
+    [2],
+    [That Book],
+    [5.20],
+    table.cell(fill:yellow, [1]),
+    [85],
+    // row 4
+    table.cell(fill: yellow, text(size:20pt)[20250101 20:14]),
+    table.cell(stroke: none)[  ], // id spanned
+    table.cell(stroke: none)[  ], // title spanned
+    [4.00],
+    table.cell(stroke: none)[  ], // quantity spanned
+    table.cell(fill:yellow, [1002]),
+    // row 5
+    table.cell(stroke: none)[  ], // dt spanned
+    table.cell(stroke: none)[  ], // id spanned
+    table.cell(stroke: none)[  ], // title spanned
+    [5.20],
+    table.cell(stroke: none)[  ], // quantity spanned
+    table.cell(stroke: none)[  ], // customer_id spanned
+  )
+
+  Columns no longer "match up" - the compressed items need extra information to specify their span
+]
+*/
 
 #slide[
   == What's fast, what's slow
@@ -508,11 +691,11 @@
   ```sql
   CREATE TABLE book_sales (
     dt DateTime,
-    id UUID,
+    id BIGINT,
     title String,
     price Decimal(8,2),
     quantity Int,
-    customer_id UUID,
+    customer_id BIGINT,
   ) ENGINE = MergeTree()
   PARTITION BY toYYMM(dt)
   ORDER BY (title, dt)
@@ -534,7 +717,9 @@
   == When to use a columnar database
 
   - When you want to query on columns not rows
+
   - When you have lots of columns
+
   - When you have a lot of data
     - Which you don't want to alter
 ]
@@ -559,18 +744,25 @@
   == Document database concepts
 
   - _Documents_ are essentially JSON
+
   - An _index_ is a collection of documents
-  - When you search (for a word) you get back all documents that matched, with a
-    _relevance score_ for how well they matched
+
+  - When you search
+    - you get back all data that matched
+    - with a _relevance score_ for how well it matched
 ]
 
 #slide[
   == Characteristics of document databases
 
   - Relatively unstructured data
+
   - But want indexing
+
   - And rich querying
+
   - OLTP - Store and query rather than update
+
   - No transactions
 ]
 
@@ -588,11 +780,14 @@
 #slide[
   == More about OpenSearch
 
-  - Technology origins in document processing, indexing and searching over large bodies of text
-  - Designed to be distributed - scaling *horizontally*
+  - Technology origins in document processing, indexing and searching for large bodies of text
+
   - Backed by #link("https://lucene.apache.org/")[Apache Lucene]
+
   - Queries are written in JSON
+
   - Schema design up front is optional - it will deduce a schema for you
+
   - Data visualisation tools built in
 ]
 
@@ -660,8 +855,10 @@
   == When to use a document database
 
   - Fast, scalable full text search
+
   - Storage of indexable JSON documents
-  - In the case of OpenSearch, sophisticated analytics visualisation
+
+  - OpenSearch: sophisticated analytics visualisation
 ]
 
 #slide[
@@ -685,7 +882,7 @@
 
       node( (0,0), [author:Tibs], shape: chevron, outset: 5pt ),
       edge("=>"),
-      node( (2,0), [{'id':273, 'name':'Tibs'}], shape: rect, outset: 5pt ),
+      node( (2,0), ['id':273, 'name':'Tibs'], shape: rect, outset: 5pt ),
       node( (0,1), [book:This Book], shape: chevron, outset: 5pt ),
       edge("=>"),
       node( (2,1), align(left)[
@@ -713,6 +910,8 @@
   - Simple
 
   - Sophisticated value data types
+
+  - Think like a Python dictionary!
 
 ]
 
@@ -772,12 +971,14 @@
 
   - In-memory, but persistent to disk
 
-  - Think like a Python dictionary!
-
   - Use cases include
+
     - Data storage and retrieval
+
     - Caching, leveraging the value expiry support
+
     - Pub/Sub messaging (`SUBSCRIBE`, `UNSUBSCRIBE`, `PUBLISH`)
+
     - Streams (append-only log) for message queues (`XADD`, `XREAD`)
 ]
 
@@ -785,7 +986,9 @@
   == When to use a key value database
 
   - When your data fits the "key" -> "value" idea
+
   - Caching (for instance, URL -> page results)
+
   - Valkey:
     - when you want your data to expire
     - pub/sub messaging
@@ -847,8 +1050,11 @@
   == Nodes
 
   Nodes have
+
   - a type
+
   - properties
+
   - are linked by relationships
 ]
 
@@ -856,10 +1062,16 @@
   == Relationships
 
   Relationships
+
   - are between nodes
+
   - are 1:1 or 1:many
-  - *may* be single or bidirectional (I have opinions)
-  - *may* have properties (I have opinions)
+
+  - depending on design (I have opinions):
+
+    - *may* be single or bidirectional
+
+    - *may* have properties
 ]
 
 // Gothic and my own experience, but briefly
@@ -893,21 +1105,29 @@
 #slide[
   == More about Neo4J nodes
 
-  - Nodes
-    - are tagged with _labels_ (to indicate their role)
-    - have any number of key:value properties
-    - be indexed
-    - have constraints on their content
+  Nodes
+
+  - are tagged with _labels_
+
+  - have key:value properties
+
+  - are indexed
 ]
+
+// So in my example graph, the labels would be Person and Book
 
 #slide[
   == More about Neo4J relationships
 
-  - Relationships
-    - have a name
-    - must have a type, a start node and an end node
-    - must have a direction
-    - can have properties
+  Relationships
+
+  - have a name
+
+  - must have a type, a start node and an end node
+
+  - must have a direction
+
+  - can have properties
 ]
 
 #slide[
@@ -937,17 +1157,22 @@
   == When to use a graph database
 
   - You have a knowledge graph shaped puzzle
+
   - Neo4J: You want to build structures as you learn them
+
   - Neo4J: You want to leverage existing techniques & solutions
 ]
 
 #slide[
   == Things just about all the shapes give you
 
-  - Transactions (not really OpenSearch)
-  - Extensibility (plugins, and so on)
-  - Vector embeddings (ValKey not yet, SQLite there's an extension)
+  - Transactions #text(size: 20pt)[(not really OpenSearch)]
+
   - JSON support
+
+  - Vector embeddings #text(size: 20pt)[(ValKey not yet; SQLite has an extension)]
+
+  - Extensibility
 ]
 
 // https://neo4j.com/docs/operations-manual/current/database-internals/transaction-management/
@@ -997,6 +1222,7 @@
   #table(
     columns: 3,
     align: left,
+    inset: 10pt,
     fill: (y, _) =>
       if calc.odd(y) { luma(240) }
       else { white },
