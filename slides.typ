@@ -129,8 +129,13 @@
   Let me tell you about them (with open source examples)
 ]
 
+#set page(header: context[
+  #set text(size: 15pt, fill:gray)
+  #align(right)[Relational]
+])
+
 #slide[
-  == Relational
+  == 1. Relational
 
   A table called *books*
 
@@ -404,9 +409,13 @@
   ... but please still stay for the rest of this talk!
 ]
 
+#set page(header: context[
+  #set text(size: 15pt, fill:gray)
+  #align(right)[Columnar]
+])
 
 #slide[
-  == Columnar
+  == 2. Columnar
 
   *book sales*
 
@@ -724,8 +733,13 @@
     - Which you don't want to alter
 ]
 
+#set page(header: context[
+  #set text(size: 15pt, fill:gray)
+  #align(right)[Document]
+])
+
 #slide[
-  == Document
+  == 3. Document
 
   ```json
   {
@@ -861,8 +875,13 @@
   - OpenSearch: sophisticated analytics visualisation
 ]
 
+#set page(header: context[
+  #set text(size: 15pt, fill:gray)
+  #align(right)[Key Value]
+])
+
 #slide[
-  == Key Value
+  == 4 Key Value
 
 
   //#show figure.where(
@@ -1009,8 +1028,13 @@
     "chapterContent": [<chapter 1>, <chapter 2>, ...]
 */
 
+#set page(header: context[
+  #set text(size: 15pt, fill:gray)
+  #align(right)[Graph]
+])
+
 #slide[
-  == Graph
+  == 5. Graph
 
   #diagram(
 
@@ -1162,6 +1186,11 @@
 
   - Neo4J: You want to leverage existing techniques & solutions
 ]
+
+#set page(header: context[
+  #set text(size: 15pt, fill:gray)
+  #align(right)[ ]
+])
 
 #slide[
   == Things just about all the shapes give you
