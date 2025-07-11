@@ -1290,7 +1290,7 @@
 
   - JSON support
 
-  - Vector embeddings #text(size: 20pt)[(Valkey not yet; SQLite has an extension)]
+  - Vector embeddings #text(size: 20pt)[(Valkey with a module; SQLite has an extension)]
 
   - Extensibility
 ]

@@ -685,6 +685,8 @@ https://valkey.io/
 
 * https://en.wikipedia.org/wiki/Key%E2%80%93value_database
 
+vector search / secondary indexing module: https://github.com/valkey-io/valkey-search
+
 ## and as an extra, Graph
 
 My promise:
