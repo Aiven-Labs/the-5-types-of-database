@@ -13,6 +13,10 @@ slides:
 	typst compile -f pdf slides.typ
 	open slides.pdf
 
+.PHONY: slides-long
+slides-long:
+	typst compile -f pdf slides-long.typ
+
 # Doesn't work for slides, as
 # "error: page configuration is not allowed inside of containers"
 # as in:
@@ -23,11 +27,12 @@ html:
 
 .PHONY: clean
 clean:
-	rm slides.pdf
+	rm -f slides.pdf slides-long.pdf
 
 .PHONY: help
 help:
 	@echo "make pdf           alias for `make slides`"
-	@echo "make slides        create slides.pdf from slides.typ"
-	@echo "make clean         delete slides.pdf"
+	@echo "make slides        create slides.pdf from slides.typ and open"
+	@echo "make slides-long   create slides-long.pdf from slides-long.typ"
+	@echo "make clean         delete slides.pdf and slides-long.pdf"
 	@echo "make help          gives this help text"

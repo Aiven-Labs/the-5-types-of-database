@@ -39,10 +39,11 @@ I'll cover:
 the slides is [slides.pdf](slides.pdf). This version of the talk is aimed at 30
 minutes or less.
 
-[slides-long.ty](slides-long.typ) is a longer version of the talk, which also
+[slides-long.typ](slides-long.typ) is a longer version of the talk, which also
 mentions transactions and OLTP/OLAP.
 
-[Notes](notes.md) are the notes I made when writing the talk.
+[notes.md](notes.md) are the notes I made when writing the talk. They're not
+really useful to anyone else at the moment.
 
 ## Creating the slides
 
@@ -51,7 +52,7 @@ The slides are created using [typst](https://typst.app/) and the
 
 They use the Libertinus fonts - see https://github.com/alerque/libertinus.
  
-To build I use the command line tool `typst`. See the [installation
+To build the PDF I use the command line tool `typst`. See the [installation
 instructions](https://github.com/typst/typst?tab=readme-ov-file#installation)
 from the [typst GitHub repostory](https://github.com/typst/typst) - on my mac
 I install it with `brew install typst` - and then
@@ -66,7 +67,7 @@ Try
 ```shell
 make slides
 ```
-and `make help` for what else it can do.
+(this will run `typst` and then `open` the PDF) and `make help` for what else it can do.
 
 --------
 
