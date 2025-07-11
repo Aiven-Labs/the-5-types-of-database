@@ -125,8 +125,6 @@
   - Document
   - Key Value
   - Graph
-
-  Let me tell you about them (with open source examples)
 ]
 
 #slide[
@@ -281,6 +279,7 @@
   ```
 ]
 
+/*
 #set page(header: context[
   #set text(size: 15pt, fill:gray)
   #align(left)[ ]
@@ -342,6 +341,7 @@
   #set text(size: 15pt, fill:gray)
   #align(left)[Relational]
 ])
+*/
 
 #slide[
   == Characteristics of relational databases
@@ -350,8 +350,10 @@
 
   - Schema design up front
 
+  /*
   - Transactions #text(fill: gray)[(pretty much always)]
     - OLTP (online transaction processing)
+  */
 ]
 
 #slide[
@@ -433,6 +435,8 @@
 
   - Whatever you need to do, some RDB can probably do it
     - and likely fast enough
+
+  #v(20pt)
 
   ... but please still stay for the rest of this talk!
 ]
@@ -661,6 +665,7 @@
   - Data stored for historical purposes
 ]
 
+/*
 #slide[
   == Concept: OLAP -- Online Analytical Processing.
 
@@ -679,6 +684,7 @@
 
   In contrast to OLTP (Online Transaction Processing)
 ]
+*/
 
 #slide[
   == Columnar example: ClickHouse®
@@ -708,23 +714,18 @@
 ]
 
 #slide[
-  == Queries
-
-  *SQL*
-
-  It's still SQL 🙂
-
-  - With some extras and useful utility functions
-]
-
-#slide[
   == More about ClickHouse
+
+  - Queries are still SQL 🙂
+    - With some extras and useful utility functions
 
   - Records don't have to have a unique primary key
     - Although having one can help
 
+  /*
   - "Full fledged" transactions aren't supported
     - Do we really need them for OLTP?
+  */
 ]
 
 // https://clickhouse.com/docs/guides/developer/transactional
@@ -818,9 +819,11 @@
 
   - And rich querying
 
-  - OLTP - Store and query rather than update
+  - /*OLTP -*/ Store and query rather than update
 
+  /*
   - No transactions
+  */
 ]
 
 #slide[
@@ -924,7 +927,7 @@
 ])
 
 #slide[
-  == 4 Key Value
+  == 4. Key Value
 
 
   //#show figure.where(
@@ -1115,7 +1118,6 @@
   #align(left)[Graph]
 ])
 
-// I mean, this slide is way too long
 #slide[
   == Characteristics of graph databases
 
@@ -1188,7 +1190,7 @@
 
   Nodes
 
-  - are tagged with _labels_
+  - have _labels_
 
   - have key:value properties
 
@@ -1252,7 +1254,9 @@
 #slide[
   == Things just about all the shapes give you
 
+  /*
   - Transactions #text(size: 20pt)[(not really OpenSearch)]
+  */
 
   - JSON support
 
@@ -1316,7 +1320,7 @@
     //row-gutter: 20pt,
     [Relational], [PostgreSQL®], [#text(size: 20pt)[Use for just about anything]],
     [ ], [SQLite], [#text(size: 20pt)[Use in your programs, use locally]],
-    [Columnar], [ClickHouse®], [#text(size: 20pt)[Use for OLAP, column oriented data]],
+    [Columnar], [ClickHouse®], [#text(size: 20pt)[Use for analytics, historical data]],
     [Document], [OpenSearch®], [#text(size: 20pt)[Use for text corpuses, semi-structured data, indexing]],
     [Key Value], [Valkey™️],  [#text(size: 20pt)[Use for caching, pub/sub, simple queues]],
     [Graph], [Neo4J®], [#text(size: 20pt)[Use for graph/network data]],
