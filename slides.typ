@@ -361,11 +361,16 @@
 
   #image("images/elephant.png", height:50pt)
 
-  #quote[
+  #quote(
+    attribution: [
+      #link("https://www.postgresql.org/about/")[www.postgresql.org/about]
+    ],
+    [
     PostgreSQL is a powerful, open source object-relational database
     system with over 35 years of active development that has earned it a
     strong reputation for reliability, feature robustness, and performance.
-  ]
+    ]
+  )
 ]
 
 // 35 years => 2025 - 35 -> 1990
@@ -392,13 +397,24 @@
 
   #image("images/SQLite370_banner.svg", height:50pt)
 
-  #quote[
+
+  #quote(
+    attribution: [
+      #link("https://www.sqlite.org/")[www.sqlite.org]
+    ],
+    [
     SQLite is a C-language library that implements a small, fast,
     self-contained, high-reliability, full-featured, SQL database engine. SQLite
     is the most used database engine in the world.
-  ]
+    ]
+  )
 
-  #quote[Small. Fast. Reliable. Choose any three.]
+  #quote(
+    attribution: [
+      #link("https://www.sqlite.org/")[www.sqlite.org]
+    ],
+    [Small. Fast. Reliable. Choose any three.]
+  )
 ]
 
 // Pronunciation: Its creator says "Ess-Cue-El-ite" but also says he doesn't
@@ -648,11 +664,16 @@
 
 #slide[
   == What's fast, what's slow
-  - Adding new rows is fast
-  - Adding new columns is fast
-  - Querying a few columns out of many is fast
 
-  - Changing or deleting rows is slow
+  Fast:
+
+  - Adding new rows
+  - Adding new columns
+  - Querying a few columns out of many
+
+  Slow:
+
+  - Changing or deleting rows
 ]
 
 #slide[
@@ -831,10 +852,17 @@
 
   #image("images/opensearch_logo_default.svg", height:50pt)
 
-  #quote[
+
+  #quote(
+    block: true,
+    attribution: [
+      #link("https://opensearch.org/")[opensearch.org]
+    ],
+    [
     OpenSearch is an open-source, enterprise-grade search and observability
     suite that brings order to unstructured data at scale
-  ]
+    ]
+  )
 ]
 
 #slide[
@@ -846,7 +874,8 @@
 
   - Queries are written in JSON
 
-  - Schema design up front is optional - it will deduce a schema for you
+  - Schema design up front is optional
+    - but sometimes advised
 
   - Data visualisation tools built in
 ]
@@ -878,6 +907,7 @@
   ```
 ]
 
+/*
 #slide[
   == Queries: Lucene syntax
   ```python
@@ -903,7 +933,8 @@
   ```
 
   #align(right)[#text(size: 20pt, fill:gray, [untested code!])]
-]
+  ]
+  */
 
 #slide[
   == A dashboard about mastodon messages
@@ -990,11 +1021,16 @@
 
   #image("images/valkey-horizontal.svg", height:50pt)
 
-  #quote[
+  #quote(
+    attribution: [
+      #link("https://valkey.io/")[https://valkey.io]
+    ],
+    [
     Valkey is an open source (BSD) high-performance key/value datastore that
     supports a variety of workloads such as caching, message queues, and can
     act as a primary database.
-  ]
+    ]
+  )
 ]
 
 #slide[
@@ -1045,7 +1081,7 @@
 
   - In-memory, but persistent to disk
 
-  - Use cases include
+  - Use cases include:
 
     - Data storage and retrieval
 
