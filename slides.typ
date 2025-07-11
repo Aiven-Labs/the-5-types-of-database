@@ -1025,7 +1025,7 @@
 // Use `OBJECT ENCODING key` to find out the internal encoding of the Valkey object stored at `key`
 
 #slide[
-  == More about ValKey
+  == More about Valkey
 
   - In-memory, but persistent to disk
 
@@ -1055,7 +1055,7 @@
 ]
 
 // Remember, nice programmers don't let other programmers do messaging using an RDB,
-// but ValKey is a sensible option
+// but Valkey is a sensible option
 
 /*
     "title": "A very good book",
@@ -1243,7 +1243,7 @@
 
   - JSON support
 
-  - Vector embeddings #text(size: 20pt)[(ValKey not yet; SQLite has an extension)]
+  - Vector embeddings #text(size: 20pt)[(Valkey not yet; SQLite has an extension)]
 
   - Extensibility
 ]
@@ -1338,8 +1338,8 @@
   == Aiven
 
   I work for Aiven _Your AI-ready Open Source Data Platform_, and we provide
-  managed versions of PostgreSQL, ClickHouse, ValKey and OpenSearch (and free
-  versions of PG and ValKey).
+  managed versions of PostgreSQL, ClickHouse, Valkey and OpenSearch (and free
+  versions of PG and Valkey).
 ]
 
 
