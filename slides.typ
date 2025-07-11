@@ -1010,15 +1010,19 @@
 
   It's actually rather lovely...
 
-  The operation used determines how the value is interpreted
-
   ```
-  SET this_key "Hello" EX 60
-  HSET this_hash field1 "Hello"
-  LSET this_list 0 "zero"
-  JSON.SET this_json . '{"a":{"a":1, "b":2, "c":3}}'
+  SET current:greeting "Hello" EX 60
+  ```
+  ```
+  LSET booklist 0 "This Book"
+  ```
+  ```
+  HGET "book:This Book" author
   ```
 ]
+
+// Use `TYPE key` to find the datatype of the value stored at `key`
+// Use `OBJECT ENCODING key` to find out the internal encoding of the Valkey object stored at `key`
 
 #slide[
   == More about ValKey
