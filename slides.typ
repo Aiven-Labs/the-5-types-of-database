@@ -368,6 +368,9 @@
 
 // 35 years => 2025 - 35 -> 1990
 
+// Pronunciation Post-Gres-Q-L (the link has an audio file!)
+// https://wiki.postgresql.org/wiki/FAQ#What_is_PostgreSQL.3F_How_is_it_pronounced.3F_What_is_Postgres.3F
+
 #slide[
   == More on PostgreSQL
 
@@ -392,7 +395,12 @@
     self-contained, high-reliability, full-featured, SQL database engine. SQLite
     is the most used database engine in the world.
   ]
+
+  #quote[Small. Fast. Reliable. Choose any three.]
 ]
+
+// Pronunciation: Its creator says "Ess-Cue-El-ite" but also says he doesn't
+// care how other people pronounce it
 
 #slide[
   == More on SQLite
@@ -470,8 +478,12 @@
     - Good for data that doesn't change a lot
 ]
 
+/*
+// This first view of compressed columns is nice, but if I'm going to have only one
+// then I think the second is more useful
+
 #slide[
-  == Compressing columns
+  == Compressing columns - unused version
 
   *book sales*
 
@@ -521,9 +533,10 @@
     // customer_id spanned
   )
 ]
+*/
 
 #slide[
-  == Compressing columns - alternative view
+  == Compressed columns
 
   *book sales*
 
