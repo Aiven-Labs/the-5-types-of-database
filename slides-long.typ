@@ -125,8 +125,6 @@
   - Document
   - Key Value
   - Graph
-
-  Let me tell you about them (with open source examples)
 ]
 
 #slide[
@@ -272,7 +270,7 @@
   ```sql
   SELECT books.title FROM books
     JOIN authors ON authors.id=books.author_id
-    WHERE authorss.name="Tibs";
+    WHERE authors.name="Tibs";
   ```
   gives the results
   ```text
@@ -359,11 +357,16 @@
 
   #image("images/elephant.png", height:50pt)
 
-  #quote[
+  #quote(
+    attribution: [
+      #link("https://www.postgresql.org/about/")[www.postgresql.org/about]
+    ],
+    [
     PostgreSQL is a powerful, open source object-relational database
     system with over 35 years of active development that has earned it a
     strong reputation for reliability, feature robustness, and performance.
-  ]
+    ]
+  )
 ]
 
 // 35 years => 2025 - 35 -> 1990
@@ -390,13 +393,24 @@
 
   #image("images/SQLite370_banner.svg", height:50pt)
 
-  #quote[
+
+  #quote(
+    attribution: [
+      #link("https://www.sqlite.org/")[www.sqlite.org]
+    ],
+    [
     SQLite is a C-language library that implements a small, fast,
     self-contained, high-reliability, full-featured, SQL database engine. SQLite
     is the most used database engine in the world.
-  ]
+    ]
+  )
 
-  #quote[Small. Fast. Reliable. Choose any three.]
+  #quote(
+    attribution: [
+      #link("https://www.sqlite.org/")[www.sqlite.org]
+    ],
+    [Small. Fast. Reliable. Choose any three.]
+  )
 ]
 
 // Pronunciation: Its creator says "Ess-Cue-El-ite" but also says he doesn't
@@ -433,6 +447,8 @@
 
   - Whatever you need to do, some RDB can probably do it
     - and likely fast enough
+
+  #v(20pt)
 
   ... but please still stay for the rest of this talk!
 ]
@@ -644,11 +660,16 @@
 
 #slide[
   == What's fast, what's slow
-  - Adding new rows is fast
-  - Adding new columns is fast
-  - Querying a few columns out of many is fast
 
-  - Changing or deleting rows is slow
+  Fast:
+
+  - Adding new rows
+  - Adding new columns
+  - Querying a few columns out of many
+
+  Slow:
+
+  - Changing or deleting rows
 ]
 
 #slide[
@@ -708,17 +729,10 @@
 ]
 
 #slide[
-  == Queries
-
-  *SQL*
-
-  It's still SQL 🙂
-
-  - With some extras and useful utility functions
-]
-
-#slide[
   == More about ClickHouse
+
+  - Queries are still SQL 🙂
+    - With some extras and useful utility functions
 
   - Records don't have to have a unique primary key
     - Although having one can help
@@ -828,10 +842,17 @@
 
   #image("images/opensearch_logo_default.svg", height:50pt)
 
-  #quote[
+
+  #quote(
+    block: true,
+    attribution: [
+      #link("https://opensearch.org/")[opensearch.org]
+    ],
+    [
     OpenSearch is an open-source, enterprise-grade search and observability
     suite that brings order to unstructured data at scale
-  ]
+    ]
+  )
 ]
 
 #slide[
@@ -843,7 +864,8 @@
 
   - Queries are written in JSON
 
-  - Schema design up front is optional - it will deduce a schema for you
+  - Schema design up front is optional
+    - but sometimes advised
 
   - Data visualisation tools built in
 ]
@@ -924,7 +946,7 @@
 ])
 
 #slide[
-  == 4 Key Value
+  == 4. Key Value
 
 
   //#show figure.where(
@@ -987,11 +1009,16 @@
 
   #image("images/valkey-horizontal.svg", height:50pt)
 
-  #quote[
+  #quote(
+    attribution: [
+      #link("https://valkey.io/")[https://valkey.io]
+    ],
+    [
     Valkey is an open source (BSD) high-performance key/value datastore that
     supports a variety of workloads such as caching, message queues, and can
     act as a primary database.
-  ]
+    ]
+  )
 ]
 
 #slide[
@@ -1042,7 +1069,7 @@
 
   - In-memory, but persistent to disk
 
-  - Use cases include
+  - Use cases include:
 
     - Data storage and retrieval
 
@@ -1115,7 +1142,6 @@
   #align(left)[Graph]
 ])
 
-// I mean, this slide is way too long
 #slide[
   == Characteristics of graph databases
 
@@ -1146,16 +1172,24 @@
 
   - are between nodes
 
-  - are 1:1 or 1:many
+  - are 1:1 or 1:many or many:1
 
   - depending on design (I have opinions):
-
+/*
     - *may* be single or bidirectional
-
+*/
     - *may* have properties
 ]
 
 // Gothic and my own experience, but briefly
+
+// About directed relationshops in Neo4J - the system can "follow" the
+// relationship in either direction, they just reckon the overhead of
+// making all relationships have names for both directions is too great,
+// and it's also too confusing
+// https://dzone.com/articles/modelling-data-neo4j
+// Given that, and because it's a detail relating to a dead system,
+// I've dropped the "single or bidirectional" point
 
 #slide[
   == Graph example: Neo4J®
@@ -1188,7 +1222,7 @@
 
   Nodes
 
-  - are tagged with _labels_
+  - have _labels_
 
   - have key:value properties
 
@@ -1316,7 +1350,7 @@
     //row-gutter: 20pt,
     [Relational], [PostgreSQL®], [#text(size: 20pt)[Use for just about anything]],
     [ ], [SQLite], [#text(size: 20pt)[Use in your programs, use locally]],
-    [Columnar], [ClickHouse®], [#text(size: 20pt)[Use for OLAP, column oriented data]],
+    [Columnar], [ClickHouse®], [#text(size: 20pt)[Use for analytics, historical data]],
     [Document], [OpenSearch®], [#text(size: 20pt)[Use for text corpuses, semi-structured data, indexing]],
     [Key Value], [Valkey™️],  [#text(size: 20pt)[Use for caching, pub/sub, simple queues]],
     [Graph], [Neo4J®], [#text(size: 20pt)[Use for graph/network data]],

@@ -270,7 +270,7 @@
   ```sql
   SELECT books.title FROM books
     JOIN authors ON authors.id=books.author_id
-    WHERE authorss.name="Tibs";
+    WHERE authors.name="Tibs";
   ```
   gives the results
   ```text
@@ -1184,16 +1184,24 @@
 
   - are between nodes
 
-  - are 1:1 or 1:many
+  - are 1:1 or 1:many or many:1
 
   - depending on design (I have opinions):
-
+/*
     - *may* be single or bidirectional
-
+*/
     - *may* have properties
 ]
 
 // Gothic and my own experience, but briefly
+
+// About directed relationshops in Neo4J - the system can "follow" the
+// relationship in either direction, they just reckon the overhead of
+// making all relationships have names for both directions is too great,
+// and it's also too confusing
+// https://dzone.com/articles/modelling-data-neo4j
+// Given that, and because it's a detail relating to a dead system,
+// I've dropped the "single or bidirectional" point
 
 #slide[
   == Graph example: Neo4J®
