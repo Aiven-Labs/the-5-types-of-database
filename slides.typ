@@ -129,11 +129,6 @@
   Let me tell you about them (with open source examples)
 ]
 
-#set page(header: context[
-  #set text(size: 15pt, fill:gray)
-  #align(right)[Relational]
-])
-
 #slide[
   == 1. Relational
 
@@ -149,6 +144,11 @@
     [3], [John's Book], [John Smith],
   )
 ]
+
+#set page(header: context[
+  #set text(size: 15pt, fill:gray)
+  #align(left)[Relational]
+])
 
 #slide[
   == Edgar F. Codd and relational theory
@@ -220,6 +220,11 @@
 
 ]
 
+#set page(header: context[
+  #set text(size: 15pt, fill:gray)
+  #align(left)[ ]
+])
+
 #slide[
   == Concept: SQL
 
@@ -241,6 +246,11 @@
 
 // SEQUEL may have been a pun (or a dig) at Ingres's QUEL query language
 
+#set page(header: context[
+  #set text(size: 15pt, fill:gray)
+  #align(left)[Relational]
+])
+
 #slide[
   == How to create those tables
   ```SQL
@@ -258,7 +268,7 @@
 ]
 
 #slide[
-  == Finding my talks...
+  == Finding my books...
   ```sql
   SELECT books.title FROM books
     JOIN authors ON authors.id=books.author_id
@@ -270,6 +280,11 @@
   That book
   ```
 ]
+
+#set page(header: context[
+  #set text(size: 15pt, fill:gray)
+  #align(left)[ ]
+])
 
 #slide[
   == Concept: Transactions
@@ -322,6 +337,11 @@
     ),
   )
 ]
+
+#set page(header: context[
+  #set text(size: 15pt, fill:gray)
+  #align(left)[Relational]
+])
 
 #slide[
   == Characteristics of relational databases
@@ -411,7 +431,7 @@
 
 #set page(header: context[
   #set text(size: 15pt, fill:gray)
-  #align(right)[Columnar]
+  #align(left)[ ]
 ])
 
 #slide[
@@ -432,6 +452,11 @@
     text(size:20pt)[20250101 20:14], [2], [That Book], [5.20], [1], [1002],
   )
 ]
+
+#set page(header: context[
+  #set text(size: 15pt, fill:gray)
+  #align(left)[Columnar]
+])
 
 #slide[
   == Characteristics of columnar databases
@@ -735,7 +760,7 @@
 
 #set page(header: context[
   #set text(size: 15pt, fill:gray)
-  #align(right)[Document]
+  #align(left)[ ]
 ])
 
 #slide[
@@ -753,6 +778,11 @@
   }
   ```
 ]
+
+#set page(header: context[
+  #set text(size: 15pt, fill:gray)
+  #align(left)[Document]
+])
 
 #slide[
   == Document database concepts
@@ -877,7 +907,7 @@
 
 #set page(header: context[
   #set text(size: 15pt, fill:gray)
-  #align(right)[Key Value]
+  #align(left)[ ]
 ])
 
 #slide[
@@ -920,6 +950,11 @@
     caption: [A picture of a dictionary 🙂]
   )
 ]
+
+#set page(header: context[
+  #set text(size: 15pt, fill:gray)
+  #align(left)[Key Value]
+])
 
 #slide[
   == Characteristics of key value databases
@@ -1030,7 +1065,7 @@
 
 #set page(header: context[
   #set text(size: 15pt, fill:gray)
-  #align(right)[Graph]
+  #align(left)[ ]
 ])
 
 #slide[
@@ -1057,6 +1092,11 @@
 
  *not* an XY data graph 🙂
 ]
+
+#set page(header: context[
+  #set text(size: 15pt, fill:gray)
+  #align(left)[Graph]
+])
 
 // I mean, this slide is way too long
 #slide[
@@ -1189,7 +1229,7 @@
 
 #set page(header: context[
   #set text(size: 15pt, fill:gray)
-  #align(right)[ ]
+  #align(left)[ ]
 ])
 
 #slide[
