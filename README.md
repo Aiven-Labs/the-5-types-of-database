@@ -35,9 +35,14 @@ I'll cover:
 
 ## Documents here
 
-[Notes](notes.md) are the notes I made when writing the talk.
+[slides.typ](slides.typ) is the Typst source code for the slides. The PDF for
+the slides is [slides.pdf](slides.pdf). This version of the talk is aimed at 30
+minutes or less.
 
-When they're stable, the slides PDF file will be here as [slides.pdf](slides.pdf).
+[slides-long.ty](slides-long.typ) is a longer version of the talk, which also
+mentions transactions and OLTP/OLAP.
+
+[Notes](notes.md) are the notes I made when writing the talk.
 
 ## Creating the slides
 
