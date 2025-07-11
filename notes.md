@@ -408,6 +408,9 @@ Why two examples?
 
 * SQLite - interesting because it's a library and it's everywhere
 
+  [SQLite: The Database at the Edge of the Network with Dr. Richard Hipp
+](https://www.youtube.com/watch?v=Jib2AmRb_rk) from 2015
+
 https://en.wikipedia.org/wiki/Relational_database
 
 https://www.postgresql.org/
