@@ -1404,11 +1404,11 @@
 
     [
       Get a free trial of Aiven services at \
-      http://go.aiven.io/tibs-signup
+      https://go.aiven.io/5-kinds-of-db
 
       Also, we're hiring! See https://aiven.io/careers
     ],
-    tiaoma.qrcode("https://go.aiven.io/tibs-signup", options: (scale: 2.35)),
+    tiaoma.qrcode("https://go.aiven.io/5-kinds-of-db", options: (scale: 2.35)),
 
     [
       Slides created using
